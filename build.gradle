@@ -21,7 +21,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.team1619:uacr-robot-core:e2555db7d7'
+    implementation 'com.github.team1619:uacr-robot-core:431c796bac'
 
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
