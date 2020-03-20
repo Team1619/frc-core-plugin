@@ -28,7 +28,7 @@ import org.uacr.utilities.injection.Inject;
 import org.uacr.utilities.logging.LogManager;
 import org.uacr.utilities.logging.Logger;
 
-public abstract class SimModelFactory extends ModelFactory {
+public class SimModelFactory extends ModelFactory {
 
 	private static final Logger sLogger = LogManager.getLogger(SimModelFactory.class);
 

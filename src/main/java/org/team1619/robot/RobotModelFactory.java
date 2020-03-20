@@ -33,7 +33,7 @@ import org.uacr.utilities.injection.Inject;
 import org.uacr.utilities.logging.LogManager;
 import org.uacr.utilities.logging.Logger;
 
-public abstract class RobotModelFactory extends ModelFactory {
+public class RobotModelFactory extends ModelFactory {
 
 	private static final Logger sLogger = LogManager.getLogger(RobotModelFactory.class);
 
