@@ -9,15 +9,15 @@ import org.uacr.utilities.Config;
 
 public abstract class Rumble extends OutputNumeric {
 
-	protected final Object fName;
-	protected final int fPort;
-	protected final String fRumbleSide;
+    protected final Object fName;
+    protected final int fPort;
+    protected final String fRumbleSide;
 
-	public Rumble(Object name, Config config) {
-		super(name, config);
+    public Rumble(Object name, Config config) {
+        super(name, config);
 
-		fName = name;
-		fPort = config.getInt("port");
-		fRumbleSide = config.getString("rumble_side", "none");
-	}
+        fName = name;
+        fPort = config.getInt("port");
+        fRumbleSide = config.getString("rumble_side", "none");
+    }
 }

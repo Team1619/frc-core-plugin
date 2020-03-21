@@ -6,23 +6,23 @@ import org.uacr.utilities.eventbus.Subscribe;
 
 public class SimInputNumericListener {
 
-	private final Object fName;
+    private final Object fName;
 
-	private double fValue = 0.0;
+    private double fValue = 0.0;
 
-	public SimInputNumericListener(EventBus eventBus, Object name) {
-		eventBus.register(this);
-		fName = name;
-	}
+    public SimInputNumericListener(EventBus eventBus, Object name) {
+        eventBus.register(this);
+        fName = name;
+    }
 
-	public double get() {
-		return fValue;
-	}
+    public double get() {
+        return fValue;
+    }
 
-	@Subscribe
-	public void onInputNumericSet(SimInputNumericSetEvent event) {
-		if (event.name.equals(fName)) {
-			fValue = event.value;
-		}
-	}
+    @Subscribe
+    public void onInputNumericSet(SimInputNumericSetEvent event) {
+        if (event.name.equals(fName)) {
+            fValue = event.value;
+        }
+    }
 }

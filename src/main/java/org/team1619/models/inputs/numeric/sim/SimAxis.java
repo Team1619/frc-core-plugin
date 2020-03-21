@@ -6,16 +6,16 @@ import org.uacr.utilities.Config;
 
 public class SimAxis extends Axis {
 
-	private SimInputNumericListener fListener;
+    private SimInputNumericListener fListener;
 
-	public SimAxis(EventBus eventBus, Object name, Config config) {
-		super(name, config);
+    public SimAxis(EventBus eventBus, Object name, Config config) {
+        super(name, config);
 
-		fListener = new SimInputNumericListener(eventBus, name);
-	}
+        fListener = new SimInputNumericListener(eventBus, name);
+    }
 
-	@Override
-	public double getAxis() {
-		return fListener.get();
-	}
+    @Override
+    public double getAxis() {
+        return fListener.get();
+    }
 }

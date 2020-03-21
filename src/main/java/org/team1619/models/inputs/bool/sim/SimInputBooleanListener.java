@@ -6,23 +6,23 @@ import org.uacr.utilities.eventbus.Subscribe;
 
 public class SimInputBooleanListener {
 
-	private final Object fName;
+    private final Object fName;
 
-	private boolean fValue = false;
+    private boolean fValue = false;
 
-	public SimInputBooleanListener(EventBus eventBus, Object name) {
-		fName = name;
-		eventBus.register(this);
-	}
+    public SimInputBooleanListener(EventBus eventBus, Object name) {
+        fName = name;
+        eventBus.register(this);
+    }
 
-	public boolean get() {
-		return fValue;
-	}
+    public boolean get() {
+        return fValue;
+    }
 
-	@Subscribe
-	public void onInputBooleanSet(SimInputBooleanSetEvent event) {
-		if (event.name.equals(fName)) {
-			fValue = event.value;
-		}
-	}
+    @Subscribe
+    public void onInputBooleanSet(SimInputBooleanSetEvent event) {
+        if (event.name.equals(fName)) {
+            fValue = event.value;
+        }
+    }
 }

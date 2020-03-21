@@ -9,17 +9,17 @@ import org.uacr.utilities.Config;
 
 public abstract class CTREMotor extends OutputNumeric {
 
-	protected final int fDeviceNumber;
-	protected final boolean fIsBrakeModeEnabled;
+    protected final int fDeviceNumber;
+    protected final boolean fIsBrakeModeEnabled;
 
-	public CTREMotor(Object name, Config config) {
-		super(name, config);
+    public CTREMotor(Object name, Config config) {
+        super(name, config);
 
-		fDeviceNumber = config.getInt("device_number");
-		fIsBrakeModeEnabled = config.getBoolean("brake_mode_enabled", true);
-	}
+        fDeviceNumber = config.getInt("device_number");
+        fIsBrakeModeEnabled = config.getBoolean("brake_mode_enabled", true);
+    }
 
-	public int getDeviceNumber() {
-		return fDeviceNumber;
-	}
+    public int getDeviceNumber() {
+        return fDeviceNumber;
+    }
 }

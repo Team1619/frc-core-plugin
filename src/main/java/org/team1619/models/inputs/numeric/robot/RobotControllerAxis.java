@@ -6,15 +6,15 @@ import org.uacr.utilities.Config;
 
 public class RobotControllerAxis extends Axis {
 
-	private XboxController fController;
+    private XboxController fController;
 
-	public RobotControllerAxis(Object name, Config config) {
-		super(name, config);
-		fController = new XboxController(fPort);
-	}
+    public RobotControllerAxis(Object name, Config config) {
+        super(name, config);
+        fController = new XboxController(fPort);
+    }
 
-	@Override
-	public double getAxis() {
-		return fController.getRawAxis(fAxis);
-	}
+    @Override
+    public double getAxis() {
+        return fController.getRawAxis(fAxis);
+    }
 }

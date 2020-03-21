@@ -5,30 +5,29 @@ import org.uacr.utilities.Config;
 
 public class RobotAnalogSensor extends AnalogSensor {
 
-	private edu.wpi.first.wpilibj.AnalogInput fAnalogLogInput;
+    private edu.wpi.first.wpilibj.AnalogInput fAnalogLogInput;
 
-	public RobotAnalogSensor(Object name, Config config) {
-		super(name, config);
-		fAnalogLogInput = new edu.wpi.first.wpilibj.AnalogInput(fPort);
-		fAnalogLogInput.resetAccumulator();
+    public RobotAnalogSensor(Object name, Config config) {
+        super(name, config);
+        fAnalogLogInput = new edu.wpi.first.wpilibj.AnalogInput(fPort);
+        fAnalogLogInput.resetAccumulator();
 
-	}
+    }
 
-	@Override
-	public double getVoltage() {
-		return fAnalogLogInput.getVoltage();
-	}
+    @Override
+    public double getVoltage() {
+        return fAnalogLogInput.getVoltage();
+    }
 
-	public double getAccumulatorCount() {
-		return fAnalogLogInput.getAccumulatorCount();
-	}
+    public double getAccumulatorCount() {
+        return fAnalogLogInput.getAccumulatorCount();
+    }
 
-	public double getAccumulatorValue() {
-		return fAnalogLogInput.getAccumulatorValue();
-	}
+    public double getAccumulatorValue() {
+        return fAnalogLogInput.getAccumulatorValue();
+    }
 
-	public double getValue() {
-		return fAnalogLogInput.getValue();
-	}
-
+    public double getValue() {
+        return fAnalogLogInput.getValue();
+    }
 }

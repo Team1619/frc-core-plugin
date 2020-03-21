@@ -11,26 +11,27 @@ import org.uacr.utilities.Config;
 
 public class RobotRumble extends Rumble {
 
-	private final XboxController fRumble;
-	private double fAdjustedOutput;
+    private final XboxController fRumble;
+    private double fAdjustedOutput;
 
-	public RobotRumble(Object name, Config config) {
-		super(name, config);
-		fRumble = new XboxController(fPort);
-		fAdjustedOutput = 0.0;
-	}
+    public RobotRumble(Object name, Config config) {
+        super(name, config);
+        fRumble = new XboxController(fPort);
+        fAdjustedOutput = 0.0;
+    }
 
-	@Override
-	public void processFlag(String flag) {
-	}
+    @Override
+    public void processFlag(String flag) {
 
-	@Override
-	public void setHardware(String outputType, double outputValue, String profile) {
-		fAdjustedOutput = outputValue;
-		if (fRumbleSide.equals("right")) {
-			fRumble.setRumble(GenericHID.RumbleType.kRightRumble, fAdjustedOutput);
-		} else if (fRumbleSide.equals("left")) {
-			fRumble.setRumble(GenericHID.RumbleType.kLeftRumble, fAdjustedOutput);
-		}
-	}
+    }
+
+    @Override
+    public void setHardware(String outputType, double outputValue, String profile) {
+        fAdjustedOutput = outputValue;
+        if (fRumbleSide.equals("right")) {
+            fRumble.setRumble(GenericHID.RumbleType.kRightRumble, fAdjustedOutput);
+        } else if (fRumbleSide.equals("left")) {
+            fRumble.setRumble(GenericHID.RumbleType.kLeftRumble, fAdjustedOutput);
+        }
+    }
 }

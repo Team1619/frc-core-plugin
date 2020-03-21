@@ -20,53 +20,53 @@ import java.util.Map;
 
 public class Odometry extends InputVector {
 
-	private static final Logger sLogger = LogManager.getLogger(Odometry.class);
+    private static final Logger sLogger = LogManager.getLogger(Odometry.class);
 
-	protected final Config fConfig;
-	protected final InputValues fSharedInputValues;
+    protected final Config fConfig;
+    protected final InputValues fSharedInputValues;
 
-	private final String fNavx;
-	private final String fLeftEncoder;
-	private final String fRightEncoder;
-	private Map<String, Double> fNavxValues = new HashMap<>();
-	private double fLeftPosition = 0;
-	private double fRightPosition = 0;
-	private double fHeading = 0;
+    private final String fNavx;
+    private final String fLeftEncoder;
+    private final String fRightEncoder;
+    private Map<String, Double> fNavxValues = new HashMap<>();
+    private double fLeftPosition = 0;
+    private double fRightPosition = 0;
+    private double fHeading = 0;
 
-	private Pose2d fCurrentPosition;
+    private Pose2d fCurrentPosition;
 
-	public Odometry(Object name, Config config, InputValues inputValues) {
-		super(name, config);
+    public Odometry(Object name, Config config, InputValues inputValues) {
+        super(name, config);
 
-		fConfig = config;
-		fSharedInputValues = inputValues;
+        fConfig = config;
+        fSharedInputValues = inputValues;
 
-		fNavx = config.getString("navx");
+        fNavx = config.getString("navx");
 
-		fLeftEncoder = config.getString("left_encoder");
-		fRightEncoder = config.getString("right_encoder");
+        fLeftEncoder = config.getString("left_encoder");
+        fRightEncoder = config.getString("right_encoder");
 
-		fCurrentPosition = new Pose2d();
-	}
+        fCurrentPosition = new Pose2d();
+    }
 
-	@Override
-	public void initialize() {
+    @Override
+    public void initialize() {
 
-	}
+    }
 
-	@Override
-	public void update() {
-		if (!fSharedInputValues.getBoolean("ipb_odometry_has_been_zeroed")) {
-			zeroPosition();
-			fSharedInputValues.setBoolean("ipb_odometry_has_been_zeroed", true);
-			sLogger.debug("Odometry Input -> Zeroed");
-			return;
-		}
+    @Override
+    public void update() {
+        if (!fSharedInputValues.getBoolean("ipb_odometry_has_been_zeroed")) {
+            zeroPosition();
+            fSharedInputValues.setBoolean("ipb_odometry_has_been_zeroed", true);
+            sLogger.debug("Odometry Input -> Zeroed");
+            return;
+        }
 
-		fHeading = getHeading();
+        fHeading = getHeading();
 
-		double leftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
-		double rightPosition = fSharedInputValues.getNumeric(fRightEncoder);
+        double leftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
+        double rightPosition = fSharedInputValues.getNumeric(fRightEncoder);
 
 		/*
 		"distance" is the straight line distance the robot has traveled since the last iteration
@@ -77,38 +77,39 @@ public class Odometry extends InputVector {
 
 		This could be improved later but in our testing it worked well.
 		 */
-		double distance = ((leftPosition - fLeftPosition) + (rightPosition - fRightPosition)) / 2;
+        double distance = ((leftPosition - fLeftPosition) + (rightPosition - fRightPosition)) / 2;
 
-		fCurrentPosition = new Pose2d(fCurrentPosition.add(new Vector(distance * Math.cos(Math.toRadians(fHeading)), distance * Math.sin(Math.toRadians(fHeading)))), fHeading);
+        fCurrentPosition = new Pose2d(fCurrentPosition.add(new Vector(distance * Math.cos(Math.toRadians(fHeading)), distance * Math.sin(Math.toRadians(fHeading)))), fHeading);
 
-		fLeftPosition = leftPosition;
-		fRightPosition = rightPosition;
-	}
+        fLeftPosition = leftPosition;
+        fRightPosition = rightPosition;
+    }
 
-	public void zeroPosition() {
-		fLeftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
-		fRightPosition = fSharedInputValues.getNumeric(fRightEncoder);
-		fCurrentPosition = new Pose2d();
-	}
+    public void zeroPosition() {
+        fLeftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
+        fRightPosition = fSharedInputValues.getNumeric(fRightEncoder);
+        fCurrentPosition = new Pose2d();
+    }
 
-	@Override
-	public Map<String, Double> get() {
-		return Map.of("x", fCurrentPosition.getX(), "y", fCurrentPosition.getY(), "heading", fCurrentPosition.getHeading());
-	}
+    @Override
+    public Map<String, Double> get() {
+        return Map.of("x", fCurrentPosition.getX(), "y", fCurrentPosition.getY(), "heading", fCurrentPosition.getHeading());
+    }
 
-	private double getHeading() {
-		fNavxValues = fSharedInputValues.getVector(fNavx);
-		double heading = fNavxValues.getOrDefault("yaw", 0.0);
+    private double getHeading() {
+        fNavxValues = fSharedInputValues.getVector(fNavx);
+        double heading = fNavxValues.getOrDefault("yaw", 0.0);
 
-		if (heading > 180) heading = -(360 - heading);
+        if (heading > 180) heading = -(360 - heading);
 
-		//Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
-		heading = -heading;
+        //Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
+        heading = -heading;
 
-		return heading;
-	}
+        return heading;
+    }
 
-	@Override
-	public void processFlag(String flag) {
-	}
+    @Override
+    public void processFlag(String flag) {
+
+    }
 }

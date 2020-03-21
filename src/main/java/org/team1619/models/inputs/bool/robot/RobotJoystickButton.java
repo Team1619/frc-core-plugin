@@ -6,15 +6,15 @@ import org.uacr.utilities.Config;
 
 public class RobotJoystickButton extends Button {
 
-	private final Joystick fJoystick;
+    private final Joystick fJoystick;
 
-	public RobotJoystickButton(Object name, Config config) {
-		super(name, config);
-		fJoystick = new Joystick(fPort);
-	}
+    public RobotJoystickButton(Object name, Config config) {
+        super(name, config);
+        fJoystick = new Joystick(fPort);
+    }
 
-	@Override
-	public boolean isPressed() {
-		return fJoystick.getRawButton(Integer.valueOf(fButton));
-	}
+    @Override
+    public boolean isPressed() {
+        return fJoystick.getRawButton(Integer.valueOf(fButton));
+    }
 }

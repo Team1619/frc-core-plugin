@@ -9,24 +9,23 @@ import java.util.Map;
 
 public class RobotAcceleration extends Accelerometer {
 
-	private final InputValues fSharedInputValues;
-	private Map<String, Double> fNavxValues;
+    private final InputValues fSharedInputValues;
+    private Map<String, Double> fNavxValues;
 
-	public RobotAcceleration(Object name, Config config, InputValues inputValues) {
-		super(name, config);
-		fSharedInputValues = inputValues;
-		fNavxValues = new HashMap<>();
-	}
+    public RobotAcceleration(Object name, Config config, InputValues inputValues) {
+        super(name, config);
+        fSharedInputValues = inputValues;
+        fNavxValues = new HashMap<>();
+    }
 
-	@Override
-	public Map<String, Double> getAcceleration() {
-		fNavxValues = fSharedInputValues.getVector("ipv_navx");
+    @Override
+    public Map<String, Double> getAcceleration() {
+        fNavxValues = fSharedInputValues.getVector("ipv_navx");
 
-		double xAcceleration = fNavxValues.getOrDefault("accel_x", 0.0);
-		double yAcceleration = fNavxValues.getOrDefault("accel_y", 0.0);
-		double zAcceleration = fNavxValues.getOrDefault("accel_z", 0.0);
+        double xAcceleration = fNavxValues.getOrDefault("accel_x", 0.0);
+        double yAcceleration = fNavxValues.getOrDefault("accel_y", 0.0);
+        double zAcceleration = fNavxValues.getOrDefault("accel_z", 0.0);
 
-		return Map.of("xAcceleration", xAcceleration, "yAcceleration", yAcceleration, "zAcceleration", zAcceleration);
-
-	}
+        return Map.of("xAcceleration", xAcceleration, "yAcceleration", yAcceleration, "zAcceleration", zAcceleration);
+    }
 }

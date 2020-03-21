@@ -5,17 +5,17 @@ import org.uacr.utilities.Config;
 
 public class SimSolenoidDouble extends SolenoidDouble {
 
-	public SimSolenoidDouble(Object name, Config config) {
-		super(name, config);
-	}
+    public SimSolenoidDouble(Object name, Config config) {
+        super(name, config);
+    }
 
-	@Override
-	public void processFlag(String flag) {
+    @Override
+    public void processFlag(String flag) {
 
-	}
+    }
 
-	@Override
-	public void setHardware(boolean output) {
+    @Override
+    public void setHardware(boolean output) {
 
-	}
+    }
 }
