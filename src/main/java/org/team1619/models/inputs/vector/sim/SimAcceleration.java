@@ -10,16 +10,16 @@ import java.util.Map;
 
 public class SimAcceleration extends Accelerometer {
 
-	private SimInputVectorListener fListener;
+    private SimInputVectorListener fListener;
 
-	public SimAcceleration(EventBus eventBus, Object name, Config config, InputValues inputValues) {
-		super(name, config);
+    public SimAcceleration(EventBus eventBus, Object name, Config config, InputValues inputValues) {
+        super(name, config);
 
-		fListener = new SimInputVectorListener(eventBus, name, new HashMap<>());
-	}
+        fListener = new SimInputVectorListener(eventBus, name, new HashMap<>());
+    }
 
-	@Override
-	public Map<String, Double> getAcceleration() {
-		return fListener.get();
-	}
+    @Override
+    public Map<String, Double> getAcceleration() {
+        return fListener.get();
+    }
 }

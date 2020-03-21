@@ -6,15 +6,15 @@ import org.uacr.utilities.Config;
 
 public class RobotJoystickAxis extends Axis {
 
-	private Joystick fJoystick;
+    private Joystick fJoystick;
 
-	public RobotJoystickAxis(Object name, Config config) {
-		super(name, config);
-		fJoystick = new Joystick(fPort);
-	}
+    public RobotJoystickAxis(Object name, Config config) {
+        super(name, config);
+        fJoystick = new Joystick(fPort);
+    }
 
-	@Override
-	public double getAxis() {
-		return fJoystick.getRawAxis(fAxis);
-	}
+    @Override
+    public double getAxis() {
+        return fJoystick.getRawAxis(fAxis);
+    }
 }

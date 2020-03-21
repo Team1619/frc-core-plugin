@@ -6,28 +6,28 @@ import org.uacr.utilities.Config;
 
 public class SimAnalogSensor extends AnalogSensor {
 
-	private SimInputNumericListener fListener;
+    private SimInputNumericListener fListener;
 
-	public SimAnalogSensor(EventBus eventBus, Object name, Config config) {
-		super(name, config);
+    public SimAnalogSensor(EventBus eventBus, Object name, Config config) {
+        super(name, config);
 
-		fListener = new SimInputNumericListener(eventBus, name);
-	}
+        fListener = new SimInputNumericListener(eventBus, name);
+    }
 
-	@Override
-	public double getVoltage() {
-		return fListener.get();
-	}
+    @Override
+    public double getVoltage() {
+        return fListener.get();
+    }
 
-	public double getAccumulatorCount() {
-		return fListener.get();
-	}
+    public double getAccumulatorCount() {
+        return fListener.get();
+    }
 
-	public double getAccumulatorValue() {
-		return fListener.get();
-	}
+    public double getAccumulatorValue() {
+        return fListener.get();
+    }
 
-	public double getValue() {
-		return fListener.get();
-	}
+    public double getValue() {
+        return fListener.get();
+    }
 }

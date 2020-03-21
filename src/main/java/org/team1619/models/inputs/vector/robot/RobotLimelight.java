@@ -27,74 +27,75 @@ import java.util.Map;
 
 public class RobotLimelight extends Limelight {
 
-	private NetworkTable fTable;
-	private double fAngleConversion;
+    private NetworkTable fTable;
+    private double fAngleConversion;
 
-	public RobotLimelight(Object name, Config config) {
-		super(name, config);
-		fAngleConversion = config.getBoolean("degrees", false) ? 1.0 : (Math.PI / 180.0);
-		if (config.getString("host").isBlank()) {
-			fTable = NetworkTableInstance.getDefault().getTable("limelight");
-		} else {
-			fTable = NetworkTableInstance.getDefault().getTable("limelight-" + config.getString("host"));
-		}
-		if(config.contains("pnp")) {
-			processFlag(config.getString("pnp"));
-		}
-	}
+    public RobotLimelight(Object name, Config config) {
+        super(name, config);
+        fAngleConversion = config.getBoolean("degrees", false) ? 1.0 : (Math.PI / 180.0);
+        if (config.getString("host").isBlank()) {
+            fTable = NetworkTableInstance.getDefault().getTable("limelight");
+        } else {
+            fTable = NetworkTableInstance.getDefault().getTable("limelight-" + config.getString("host"));
+        }
+        if (config.contains("pnp")) {
+            processFlag(config.getString("pnp"));
+        }
+    }
 
-	@Override
-	public Map<String, Double> getData() {
-		Map<String, Double> values = new HashMap<>();
-		values.put("tv", fTable.getEntry("tv").getDouble(0));
-		values.put("tx", fAngleConversion * fTable.getEntry("tx").getDouble(0));
-		values.put("ty", fAngleConversion * fTable.getEntry("ty").getDouble(0));
-		values.put("ta", fTable.getEntry("ta").getDouble(0));
-		values.put("ts", fAngleConversion * fTable.getEntry("ts").getDouble(0));
-		values.put("tl", fTable.getEntry("tl").getDouble(0));
-		Number[] myDefault = new Number[]{0, 0, 0, 0, 0, 0};
-		Number[] camtran = fTable.getEntry("camtran").getNumberArray(myDefault);
-		values.put("dx", camtran[0].doubleValue());
-		values.put("dy", camtran[1].doubleValue());
-		values.put("dz", camtran[2].doubleValue());
-		values.put("pitch", fAngleConversion * camtran[3].doubleValue());
-		values.put("roll", fAngleConversion * camtran[4].doubleValue());
-		values.put("yaw", fAngleConversion * camtran[5].doubleValue());
+    @Override
+    public Map<String, Double> getData() {
+        Map<String, Double> values = new HashMap<>();
+        values.put("tv", fTable.getEntry("tv").getDouble(0));
+        values.put("tx", fAngleConversion * fTable.getEntry("tx").getDouble(0));
+        values.put("ty", fAngleConversion * fTable.getEntry("ty").getDouble(0));
+        values.put("ta", fTable.getEntry("ta").getDouble(0));
+        values.put("ts", fAngleConversion * fTable.getEntry("ts").getDouble(0));
+        values.put("tl", fTable.getEntry("tl").getDouble(0));
+        Number[] myDefault = new Number[]{0, 0, 0, 0, 0, 0};
+        Number[] camtran = fTable.getEntry("camtran").getNumberArray(myDefault);
+        values.put("dx", camtran[0].doubleValue());
+        values.put("dy", camtran[1].doubleValue());
+        values.put("dz", camtran[2].doubleValue());
+        values.put("pitch", fAngleConversion * camtran[3].doubleValue());
+        values.put("roll", fAngleConversion * camtran[4].doubleValue());
+        values.put("yaw", fAngleConversion * camtran[5].doubleValue());
 
-		return values;
-	}
+        return values;
+    }
 
-	@Override
-	public void processFlag(String flag) {
-		if(fPipelines.containsKey(flag)) {
-			NetworkTableEntry pipelineEntry = fTable.getEntry("pipeline");
-			pipelineEntry.setNumber(fPipelines.get(flag));
-		} else if(flag.contains("pnp")){
-			NetworkTableEntry pnpEntry = fTable.getEntry("stream");
-			switch (flag) {
-				case "pnp-standard":
-					pnpEntry.setNumber(0);
-					break;
-				case "pnp-main":
-					pnpEntry.setNumber(1);
-					break;
-				case "pnp-secondary":
-					pnpEntry.setNumber(2);
-					break;
-			}
-		} else if (flag.contains("led")) {
-			switch (flag) {
-				case "led-on":
-					fTable.getEntry("ledMode").setValue(0);
-					break;
-				case "led-off":
-					fTable.getEntry("ledMode").setValue(1);
-					break;
-			}
-		}
-	}
+    @Override
+    public void processFlag(String flag) {
+        if (fPipelines.containsKey(flag)) {
+            NetworkTableEntry pipelineEntry = fTable.getEntry("pipeline");
+            pipelineEntry.setNumber(fPipelines.get(flag));
+        } else if (flag.contains("pnp")) {
+            NetworkTableEntry pnpEntry = fTable.getEntry("stream");
+            switch (flag) {
+                case "pnp-standard":
+                    pnpEntry.setNumber(0);
+                    break;
+                case "pnp-main":
+                    pnpEntry.setNumber(1);
+                    break;
+                case "pnp-secondary":
+                    pnpEntry.setNumber(2);
+                    break;
+            }
+        } else if (flag.contains("led")) {
+            switch (flag) {
+                case "led-on":
+                    fTable.getEntry("ledMode").setValue(0);
+                    break;
+                case "led-off":
+                    fTable.getEntry("ledMode").setValue(1);
+                    break;
+            }
+        }
+    }
 
-	@Override
-	public void initialize() {
-	}
+    @Override
+    public void initialize() {
+
+    }
 }

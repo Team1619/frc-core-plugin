@@ -13,24 +13,24 @@ import org.uacr.utilities.logging.Logger;
 
 public class RobotDashboard implements Dashboard {
 
-	private static final Logger sLogger = LogManager.getLogger(RobotDashboard.class);
-	Preferences prefs = Preferences.getInstance();
-	SendableChooser<String> fAutoOrigin = new SendableChooser<>();
-	SendableChooser<String> fAutoDestination = new SendableChooser<>();
-	SendableChooser<String> fAutoAction = new SendableChooser<>();
-	private InputValues fSharedInputValues;
-	private String fPreviousAutoOrigin = "none";
-	private String fPreviousAutoDestination = "none";
-	private String fPreviousAutoAction = "none";
+    private static final Logger sLogger = LogManager.getLogger(RobotDashboard.class);
+    Preferences prefs = Preferences.getInstance();
+    SendableChooser<String> fAutoOrigin = new SendableChooser<>();
+    SendableChooser<String> fAutoDestination = new SendableChooser<>();
+    SendableChooser<String> fAutoAction = new SendableChooser<>();
+    private InputValues fSharedInputValues;
+    private String fPreviousAutoOrigin = "none";
+    private String fPreviousAutoDestination = "none";
+    private String fPreviousAutoAction = "none";
 
 
-	@Inject
-	public RobotDashboard(InputValues inputValues) {
-		fSharedInputValues = inputValues;
-	}
+    @Inject
+    public RobotDashboard(InputValues inputValues) {
+        fSharedInputValues = inputValues;
+    }
 
-	@Override
-	public void initialize() {
+    @Override
+    public void initialize() {
 //		fAutoOrigin.setDefaultOption("None", "None");
 //		fAutoOrigin.addOption("Left", "Left");
 //		fAutoOrigin.addOption("Right", "Right");
@@ -50,47 +50,47 @@ public class RobotDashboard implements Dashboard {
 //		fPreviousAutoDestination = fAutoDestination.getSelected();
 //		fPreviousAutoAction = fAutoAction.getSelected();
 
-	}
+    }
 
-	@Override
-	public void putNumber(String name, double value) {
-		SmartDashboard.putNumber(name, value);
-	}
+    @Override
+    public void putNumber(String name, double value) {
+        SmartDashboard.putNumber(name, value);
+    }
 
-	@Override
-	public void putBoolean(String name, boolean value) {
-		SmartDashboard.putBoolean(name, value);
-	}
+    @Override
+    public void putBoolean(String name, boolean value) {
+        SmartDashboard.putBoolean(name, value);
+    }
 
-	//Intended for Preferences
-	@Override
-	public double getNumber(String name) {
-		return prefs.getDouble(name, -1);
-	}
+    //Intended for Preferences
+    @Override
+    public double getNumber(String name) {
+        return prefs.getDouble(name, -1);
+    }
 
-	@Override
-	public void putString(String key, String value) {
-		SmartDashboard.putString(key, value);
-	}
+    @Override
+    public void putString(String key, String value) {
+        SmartDashboard.putString(key, value);
+    }
 
-	@Override
-	public void setNetworkTableValue(String table, String entry, Object value) {
-		NetworkTableInstance.getDefault().getTable(table).getEntry(entry).setValue(value);
-	}
+    @Override
+    public void setNetworkTableValue(String table, String entry, Object value) {
+        NetworkTableInstance.getDefault().getTable(table).getEntry(entry).setValue(value);
+    }
 
-	@Override
-	public void smartdashboardSetAuto() {
-		fSharedInputValues.setString("ips_auto_origin", fAutoOrigin.getSelected());
-		fSharedInputValues.setString("ips_auto_destination", fAutoDestination.getSelected());
-		fSharedInputValues.setString("ips_auto_action", fAutoAction.getSelected());
-		fSharedInputValues.setString("ips_selected_auto",
-				fSharedInputValues.getString("ips_auto_origin") + " to " +
-						fSharedInputValues.getString("ips_auto_destination") + ", " +
-						fSharedInputValues.getString("ips_auto_action"));
-	}
+    @Override
+    public void smartdashboardSetAuto() {
+        fSharedInputValues.setString("ips_auto_origin", fAutoOrigin.getSelected());
+        fSharedInputValues.setString("ips_auto_destination", fAutoDestination.getSelected());
+        fSharedInputValues.setString("ips_auto_action", fAutoAction.getSelected());
+        fSharedInputValues.setString("ips_selected_auto",
+                fSharedInputValues.getString("ips_auto_origin") + " to " +
+                        fSharedInputValues.getString("ips_auto_destination") + ", " +
+                        fSharedInputValues.getString("ips_auto_action"));
+    }
 
-	@Override
-	public boolean autoSelectionRisingEdge() {
+    @Override
+    public boolean autoSelectionRisingEdge() {
 //		String origin = fAutoOrigin.getSelected();
 //		String destination = fAutoDestination.getSelected();
 //		String action = fAutoAction.getSelected();
@@ -100,7 +100,6 @@ public class RobotDashboard implements Dashboard {
 //			fPreviousAutoAction = action;
 //			return true;
 //		}
-		return false;
-	}
-
+        return false;
+    }
 }

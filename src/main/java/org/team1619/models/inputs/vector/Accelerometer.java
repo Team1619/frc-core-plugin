@@ -8,30 +8,31 @@ import java.util.Map;
 
 public abstract class Accelerometer extends InputVector {
 
-	private Map<String, Double> fAcceleration = new HashMap<>();
+    private Map<String, Double> fAcceleration = new HashMap<>();
 
-	public Accelerometer(Object name, Config config) {
-		super(name, config);
-	}
+    public Accelerometer(Object name, Config config) {
+        super(name, config);
+    }
 
-	@Override
-	public void update() {
-		fAcceleration = getAcceleration();
-	}
+    @Override
+    public void update() {
+        fAcceleration = getAcceleration();
+    }
 
-	@Override
-	public void initialize() {
+    @Override
+    public void initialize() {
 
-	}
+    }
 
-	@Override
-	public Map<String, Double> get() {
-		return fAcceleration;
-	}
+    @Override
+    public Map<String, Double> get() {
+        return fAcceleration;
+    }
 
-	@Override
-	public void processFlag(String flag) {
-	}
+    @Override
+    public void processFlag(String flag) {
 
-	public abstract Map<String, Double> getAcceleration();
+    }
+
+    public abstract Map<String, Double> getAcceleration();
 }

@@ -8,21 +8,21 @@ import java.util.Map;
 
 public class SimLimelight extends Limelight {
 
-	private SimInputVectorListener fListener;
+    private SimInputVectorListener fListener;
 
-	public SimLimelight(EventBus eventBus, Object name, Config config) {
-		super(name, config);
+    public SimLimelight(EventBus eventBus, Object name, Config config) {
+        super(name, config);
 
-		fListener = new SimInputVectorListener(eventBus, name, Map.of("tv", 0.0, "tx", 0.0, "ty", 0.0, "ta", 0.0, "ts", 0.0, "tl", 0.0));
-	}
+        fListener = new SimInputVectorListener(eventBus, name, Map.of("tv", 0.0, "tx", 0.0, "ty", 0.0, "ta", 0.0, "ts", 0.0, "tl", 0.0));
+    }
 
-	@Override
-	public Map<String, Double> getData() {
-		return fListener.get();
-	}
+    @Override
+    public Map<String, Double> getData() {
+        return fListener.get();
+    }
 
-	@Override
-	public void initialize() {
+    @Override
+    public void initialize() {
 
-	}
+    }
 }

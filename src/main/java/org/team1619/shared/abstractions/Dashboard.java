@@ -2,19 +2,19 @@ package org.team1619.shared.abstractions;
 
 public interface Dashboard {
 
-	void initialize();
+    void initialize();
 
-	void putNumber(String name, double value);
+    void putNumber(String name, double value);
 
-	void putBoolean(String name, boolean value);
+    void putBoolean(String name, boolean value);
 
-	double getNumber(String name);
+    double getNumber(String name);
 
-	void putString(String key, String value);
+    void putString(String key, String value);
 
-	void setNetworkTableValue(String table, String Entry, Object value);
+    void setNetworkTableValue(String table, String Entry, Object value);
 
-	void smartdashboardSetAuto();
+    void smartdashboardSetAuto();
 
-	boolean autoSelectionRisingEdge();
+    boolean autoSelectionRisingEdge();
 }

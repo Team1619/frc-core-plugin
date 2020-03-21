@@ -5,46 +5,47 @@ import org.uacr.utilities.Config;
 
 public abstract class DigitalSensor extends InputBoolean {
 
-	protected int fId;
-	private boolean fPreviousValue;
-	private boolean fValue;
+    protected int fId;
+    private boolean fPreviousValue;
+    private boolean fValue;
 
-	public DigitalSensor(Object name, Config config) {
-		super(name, config);
+    public DigitalSensor(Object name, Config config) {
+        super(name, config);
 
-		fId = config.getInt("id");
-	}
+        fId = config.getInt("id");
+    }
 
-	public abstract boolean getDigitalInputValue();
+    public abstract boolean getDigitalInputValue();
 
-	@Override
-	public void initialize() {
-		fValue = getDigitalInputValue();
-	}
+    @Override
+    public void initialize() {
+        fValue = getDigitalInputValue();
+    }
 
-	@Override
-	public void update() {
-		fPreviousValue = fValue;
-		fValue = getDigitalInputValue();
-	}
+    @Override
+    public void update() {
+        fPreviousValue = fValue;
+        fValue = getDigitalInputValue();
+    }
 
-	@Override
-	public boolean get() {
-		return fIsInverted != fValue;
-	}
+    @Override
+    public boolean get() {
+        return fIsInverted != fValue;
+    }
 
-	@Override
-	public DeltaType getDelta() {
-		if (!fPreviousValue && fValue) {
-			return DeltaType.RISING_EDGE;
-		} else if (fPreviousValue && !fValue) {
-			return DeltaType.FALLING_EDGE;
-		} else {
-			return DeltaType.NO_DELTA;
-		}
-	}
+    @Override
+    public DeltaType getDelta() {
+        if (!fPreviousValue && fValue) {
+            return DeltaType.RISING_EDGE;
+        } else if (fPreviousValue && !fValue) {
+            return DeltaType.FALLING_EDGE;
+        } else {
+            return DeltaType.NO_DELTA;
+        }
+    }
 
-	@Override
-	public void processFlag(String flag) {
-	}
+    @Override
+    public void processFlag(String flag) {
+
+    }
 }

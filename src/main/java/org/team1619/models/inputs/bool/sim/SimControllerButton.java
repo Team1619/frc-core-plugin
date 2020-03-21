@@ -6,16 +6,16 @@ import org.uacr.utilities.Config;
 
 public class SimControllerButton extends Button {
 
-	private SimInputBooleanListener fListener;
+    private SimInputBooleanListener fListener;
 
-	public SimControllerButton(EventBus eventBus, Object name, Config config) {
-		super(name, config);
+    public SimControllerButton(EventBus eventBus, Object name, Config config) {
+        super(name, config);
 
-		fListener = new SimInputBooleanListener(eventBus, name);
-	}
+        fListener = new SimInputBooleanListener(eventBus, name);
+    }
 
-	@Override
-	public boolean isPressed() {
-		return fListener.get();
-	}
+    @Override
+    public boolean isPressed() {
+        return fListener.get();
+    }
 }

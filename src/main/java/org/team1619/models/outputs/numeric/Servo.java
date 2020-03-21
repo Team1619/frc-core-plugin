@@ -9,11 +9,11 @@ import org.uacr.utilities.Config;
 
 public abstract class Servo extends OutputNumeric {
 
-	protected final int fChannel;
+    protected final int fChannel;
 
-	public Servo(Object name, Config config) {
-		super(name, config);
+    public Servo(Object name, Config config) {
+        super(name, config);
 
-		fChannel = config.getInt("device_channel");
-	}
+        fChannel = config.getInt("device_channel");
+    }
 }

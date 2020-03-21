@@ -27,60 +27,58 @@ import java.util.Map;
 
 public abstract class Navx extends InputVector {
 
-	protected Map<String, Boolean> fIsRaidans;
-	protected Map<String, Boolean> fIsInverted;
-	protected Map<String, Double> fNavxValues = new HashMap<>();
+    protected Map<String, Boolean> fIsRaidans;
+    protected Map<String, Boolean> fIsInverted;
+    protected Map<String, Double> fNavxValues = new HashMap<>();
 
-	public Navx(Object name, Config config) {
-		super(name, config);
+    public Navx(Object name, Config config) {
+        super(name, config);
 
-		//Is Inverted
-		fIsInverted = new HashMap<>();
-		fIsInverted.put("yaw", config.getBoolean("yaw_is_inverted", false));
-		fIsInverted.put("roll", config.getBoolean("roll_is_inverted", false));
-		fIsInverted.put("pitch", config.getBoolean("pitch_is_inverted", false));
-		fIsInverted.put("compass", config.getBoolean("compass_is_inverted", false));
-		fIsInverted.put("angle", config.getBoolean("angle_is_inverted", false));
-		fIsInverted.put("fused_heading", config.getBoolean("fused_heading_is_inverted", false));
-		fIsInverted.put("accel_x", config.getBoolean("accel_x_is_inverted", false));
-		fIsInverted.put("accel_y", config.getBoolean("accel_y_is_inverted", false));
-		fIsInverted.put("accel_z", config.getBoolean("accel_z_is_inverted", false));
+        //Is Inverted
+        fIsInverted = new HashMap<>();
+        fIsInverted.put("yaw", config.getBoolean("yaw_is_inverted", false));
+        fIsInverted.put("roll", config.getBoolean("roll_is_inverted", false));
+        fIsInverted.put("pitch", config.getBoolean("pitch_is_inverted", false));
+        fIsInverted.put("compass", config.getBoolean("compass_is_inverted", false));
+        fIsInverted.put("angle", config.getBoolean("angle_is_inverted", false));
+        fIsInverted.put("fused_heading", config.getBoolean("fused_heading_is_inverted", false));
+        fIsInverted.put("accel_x", config.getBoolean("accel_x_is_inverted", false));
+        fIsInverted.put("accel_y", config.getBoolean("accel_y_is_inverted", false));
+        fIsInverted.put("accel_z", config.getBoolean("accel_z_is_inverted", false));
 
-		// Is radians
-		fIsRaidans = new HashMap<>();
-		fIsRaidans.put("yaw", config.getBoolean("yaw_is_radians", false));
-		fIsRaidans.put("roll", config.getBoolean("roll_is_radians", false));
-		fIsRaidans.put("pitch", config.getBoolean("pitch_is_radians", false));
-		fIsRaidans.put("compass", config.getBoolean("compass_is_radians", false));
-		fIsRaidans.put("angle", config.getBoolean("angle_is_radians", false));
-		fIsRaidans.put("fused_heading", config.getBoolean("fused_heading_is_radians", false));
-	}
+        // Is radians
+        fIsRaidans = new HashMap<>();
+        fIsRaidans.put("yaw", config.getBoolean("yaw_is_radians", false));
+        fIsRaidans.put("roll", config.getBoolean("roll_is_radians", false));
+        fIsRaidans.put("pitch", config.getBoolean("pitch_is_radians", false));
+        fIsRaidans.put("compass", config.getBoolean("compass_is_radians", false));
+        fIsRaidans.put("angle", config.getBoolean("angle_is_radians", false));
+        fIsRaidans.put("fused_heading", config.getBoolean("fused_heading_is_radians", false));
+    }
 
-	@Override
-	public void update() {
-		fNavxValues = readHardware();
-	}
+    @Override
+    public void update() {
+        fNavxValues = readHardware();
+    }
 
-	@Override
-	public void initialize() {
-		fNavxValues = Map.of("Yaw", 0.0, "roll", 0.0, "pitch", 0.0, "compass", 0.0, "angle", 0.0, "fused_heading", 0.0, "accel_x", 0.0, "accel_y", 0.0, "accel_z", 0.0);
-	}
+    @Override
+    public void initialize() {
+        fNavxValues = Map.of("Yaw", 0.0, "roll", 0.0, "pitch", 0.0, "compass", 0.0, "angle", 0.0, "fused_heading", 0.0, "accel_x", 0.0, "accel_y", 0.0, "accel_z", 0.0);
+    }
 
-	@Override
-	public Map<String, Double> get() {
-		return fNavxValues;
-	}
+    @Override
+    public Map<String, Double> get() {
+        return fNavxValues;
+    }
 
-	public void processFlag(String flag) {
-		if (flag.equals("zero")) {
-			zeroYaw();
-		}
-	}
-
-
-	protected abstract Map<String, Double> readHardware();
-
-	protected abstract void zeroYaw();
+    public void processFlag(String flag) {
+        if (flag.equals("zero")) {
+            zeroYaw();
+        }
+    }
 
 
+    protected abstract Map<String, Double> readHardware();
+
+    protected abstract void zeroYaw();
 }

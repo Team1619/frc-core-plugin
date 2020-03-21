@@ -8,7 +8,7 @@ import org.uacr.utilities.Config;
 
 public abstract class Victor extends CTREMotor {
 
-	public Victor(Object name, Config config) {
-		super(name, config);
-	}
+    public Victor(Object name, Config config) {
+        super(name, config);
+    }
 }

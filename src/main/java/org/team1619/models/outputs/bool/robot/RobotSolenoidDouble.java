@@ -4,29 +4,27 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import org.team1619.models.outputs.bool.SolenoidDouble;
 import org.uacr.utilities.Config;
 
-
 public class RobotSolenoidDouble extends SolenoidDouble {
 
-	private final edu.wpi.first.wpilibj.DoubleSolenoid fWpiSolenoid;
+    private final edu.wpi.first.wpilibj.DoubleSolenoid fWpiSolenoid;
 
-	public RobotSolenoidDouble(Object name, Config config) {
-		super(name, config);
-		fWpiSolenoid = new edu.wpi.first.wpilibj.DoubleSolenoid(fDeviceNumberMaster, fDeviceNumberSlave);
-		fWpiSolenoid.set(DoubleSolenoid.Value.kOff);
-	}
+    public RobotSolenoidDouble(Object name, Config config) {
+        super(name, config);
+        fWpiSolenoid = new edu.wpi.first.wpilibj.DoubleSolenoid(fDeviceNumberMaster, fDeviceNumberSlave);
+        fWpiSolenoid.set(DoubleSolenoid.Value.kOff);
+    }
 
-	@Override
-	public void processFlag(String flag) {
+    @Override
+    public void processFlag(String flag) {
 
-	}
+    }
 
-	@Override
-	public void setHardware(boolean output) {
-		if (output) {
-			fWpiSolenoid.set(DoubleSolenoid.Value.kForward);
-		} else {
-			fWpiSolenoid.set(DoubleSolenoid.Value.kReverse);
-		}
-	}
-
+    @Override
+    public void setHardware(boolean output) {
+        if (output) {
+            fWpiSolenoid.set(DoubleSolenoid.Value.kForward);
+        } else {
+            fWpiSolenoid.set(DoubleSolenoid.Value.kReverse);
+        }
+    }
 }

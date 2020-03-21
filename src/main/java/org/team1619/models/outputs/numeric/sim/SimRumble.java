@@ -9,30 +9,31 @@ import org.uacr.utilities.Config;
 
 public class SimRumble extends Rumble {
 
-	private double fOutput;
-	private String fRumbleSide;
-	private double fAdjustedOutput;
+    private double fOutput;
+    private String fRumbleSide;
+    private double fAdjustedOutput;
 
-	public SimRumble(Object name, Config config) {
-		super(name, config);
-		fOutput = 0.0;
-		fAdjustedOutput = 0.0;
-		fRumbleSide = "none";
-	}
+    public SimRumble(Object name, Config config) {
+        super(name, config);
+        fOutput = 0.0;
+        fAdjustedOutput = 0.0;
+        fRumbleSide = "none";
+    }
 
-	@Override
-	public void processFlag(String flag) {
-	}
+    @Override
+    public void processFlag(String flag) {
 
-	@Override
-	public void setHardware(String outputType, double outputValue, String profile) {
-		fAdjustedOutput = outputValue;
-		if (fRumbleSide.equals("right")) {
-			fOutput = fAdjustedOutput;
-			fRumbleSide = "right";
-		} else if (fRumbleSide.equals("left")) {
-			fOutput = fAdjustedOutput;
-			fRumbleSide = "left";
-		}
-	}
+    }
+
+    @Override
+    public void setHardware(String outputType, double outputValue, String profile) {
+        fAdjustedOutput = outputValue;
+        if (fRumbleSide.equals("right")) {
+            fOutput = fAdjustedOutput;
+            fRumbleSide = "right";
+        } else if (fRumbleSide.equals("left")) {
+            fOutput = fAdjustedOutput;
+            fRumbleSide = "left";
+        }
+    }
 }
