@@ -14,19 +14,19 @@ import org.uacr.utilities.logging.Logger;
 public class RobotDashboard implements Dashboard {
 
     private static final Logger sLogger = LogManager.getLogger(RobotDashboard.class);
-    Preferences prefs = Preferences.getInstance();
-    SendableChooser<String> fAutoOrigin = new SendableChooser<>();
-    SendableChooser<String> fAutoDestination = new SendableChooser<>();
-    SendableChooser<String> fAutoAction = new SendableChooser<>();
-    private InputValues fSharedInputValues;
-    private String fPreviousAutoOrigin = "none";
-    private String fPreviousAutoDestination = "none";
-    private String fPreviousAutoAction = "none";
+    Preferences mPrefs = Preferences.getInstance();
+    SendableChooser<String> mAutoOrigin = new SendableChooser<>();
+    SendableChooser<String> mAutoDestination = new SendableChooser<>();
+    SendableChooser<String> mAutoAction = new SendableChooser<>();
+    private InputValues mSharedInputValues;
+    private String mPreviousAutoOrigin = "none";
+    private String mPreviousAutoDestination = "none";
+    private String mPreviousAutoAction = "none";
 
 
     @Inject
     public RobotDashboard(InputValues inputValues) {
-        fSharedInputValues = inputValues;
+        mSharedInputValues = inputValues;
     }
 
     @Override
@@ -65,7 +65,7 @@ public class RobotDashboard implements Dashboard {
     //Intended for Preferences
     @Override
     public double getNumber(String name) {
-        return prefs.getDouble(name, -1);
+        return mPrefs.getDouble(name, -1);
     }
 
     @Override
@@ -80,13 +80,13 @@ public class RobotDashboard implements Dashboard {
 
     @Override
     public void smartdashboardSetAuto() {
-        fSharedInputValues.setString("ips_auto_origin", fAutoOrigin.getSelected());
-        fSharedInputValues.setString("ips_auto_destination", fAutoDestination.getSelected());
-        fSharedInputValues.setString("ips_auto_action", fAutoAction.getSelected());
-        fSharedInputValues.setString("ips_selected_auto",
-                fSharedInputValues.getString("ips_auto_origin") + " to " +
-                        fSharedInputValues.getString("ips_auto_destination") + ", " +
-                        fSharedInputValues.getString("ips_auto_action"));
+        mSharedInputValues.setString("ips_auto_origin", mAutoOrigin.getSelected());
+        mSharedInputValues.setString("ips_auto_destination", mAutoDestination.getSelected());
+        mSharedInputValues.setString("ips_auto_action", mAutoAction.getSelected());
+        mSharedInputValues.setString("ips_selected_auto",
+                mSharedInputValues.getString("ips_auto_origin") + " to " +
+                        mSharedInputValues.getString("ips_auto_destination") + ", " +
+                        mSharedInputValues.getString("ips_auto_action"));
     }
 
     @Override

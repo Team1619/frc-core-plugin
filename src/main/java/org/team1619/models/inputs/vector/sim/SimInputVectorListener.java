@@ -9,22 +9,22 @@ import java.util.Map;
 public class SimInputVectorListener {
 
     private final Object fName;
-    private Map<String, Double> fValues;
+    private Map<String, Double> mValues;
 
     public SimInputVectorListener(EventBus eventBus, Object name, Map<String, Double> startingValues) {
         eventBus.register(this);
         fName = name;
-        fValues = startingValues;
+        mValues = startingValues;
     }
 
     public Map<String, Double> get() {
-        return fValues;
+        return mValues;
     }
 
     @Subscribe
     public void onInputVectorSet(SimInputVectorSetEvent event) {
         if (event.name.equals(fName)) {
-            fValues = event.values;
+            mValues = event.values;
         }
     }
 }

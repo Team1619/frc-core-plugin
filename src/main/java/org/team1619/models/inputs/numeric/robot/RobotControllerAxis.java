@@ -6,7 +6,7 @@ import org.uacr.utilities.Config;
 
 public class RobotControllerAxis extends Axis {
 
-    private XboxController fController;
+    private final XboxController fController;
 
     public RobotControllerAxis(Object name, Config config) {
         super(name, config);

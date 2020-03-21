@@ -5,7 +5,7 @@ import org.uacr.utilities.Config;
 
 public class RobotAnalogSensor extends AnalogSensor {
 
-    private edu.wpi.first.wpilibj.AnalogInput fAnalogLogInput;
+    private final edu.wpi.first.wpilibj.AnalogInput fAnalogLogInput;
 
     public RobotAnalogSensor(Object name, Config config) {
         super(name, config);

@@ -6,7 +6,7 @@ import org.uacr.utilities.Config;
 
 public class SimDigitalSensor extends DigitalSensor {
 
-    private SimInputBooleanListener fListener;
+    private final SimInputBooleanListener fListener;
 
     public SimDigitalSensor(EventBus eventBus, Object name, Config config) {
         super(name, config);

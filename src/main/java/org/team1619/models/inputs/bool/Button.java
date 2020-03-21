@@ -8,8 +8,8 @@ public abstract class Button extends InputBoolean {
     protected final int fPort;
     protected final String fButton;
 
-    private boolean fIsPressed = false;
-    private DeltaType fDelta = DeltaType.NO_DELTA;
+    private boolean mIsPressed = false;
+    private DeltaType mDelta = DeltaType.NO_DELTA;
 
     public Button(Object name, Config config) {
         super(name, config);
@@ -22,15 +22,15 @@ public abstract class Button extends InputBoolean {
     public void update() {
         boolean nextIsPressed = fIsInverted != isPressed();
 
-        if (nextIsPressed && !fIsPressed) {
-            fDelta = DeltaType.RISING_EDGE;
-        } else if (!nextIsPressed && fIsPressed) {
-            fDelta = DeltaType.FALLING_EDGE;
+        if (nextIsPressed && !mIsPressed) {
+            mDelta = DeltaType.RISING_EDGE;
+        } else if (!nextIsPressed && mIsPressed) {
+            mDelta = DeltaType.FALLING_EDGE;
         } else {
-            fDelta = DeltaType.NO_DELTA;
+            mDelta = DeltaType.NO_DELTA;
         }
 
-        fIsPressed = nextIsPressed;
+        mIsPressed = nextIsPressed;
     }
 
     @Override
@@ -40,12 +40,12 @@ public abstract class Button extends InputBoolean {
 
     @Override
     public boolean get() {
-        return fIsPressed;
+        return mIsPressed;
     }
 
     @Override
     public DeltaType getDelta() {
-        return fDelta;
+        return mDelta;
     }
 
     public abstract boolean isPressed();

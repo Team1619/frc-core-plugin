@@ -5,7 +5,7 @@ import org.uacr.utilities.Config;
 
 public class RobotDigitalSensor extends DigitalSensor {
 
-    private edu.wpi.first.wpilibj.DigitalInput fSensor;
+    private final edu.wpi.first.wpilibj.DigitalInput fSensor;
 
     public RobotDigitalSensor(Object name, Config config) {
         super(name, config);

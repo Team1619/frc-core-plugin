@@ -6,7 +6,7 @@ import org.uacr.utilities.Config;
 
 public class SimAnalogSensor extends AnalogSensor {
 
-    private SimInputNumericListener fListener;
+    private final SimInputNumericListener fListener;
 
     public SimAnalogSensor(EventBus eventBus, Object name, Config config) {
         super(name, config);

@@ -6,7 +6,7 @@ import org.uacr.utilities.Config;
 
 public class SimControllerButton extends Button {
 
-    private SimInputBooleanListener fListener;
+    private final SimInputBooleanListener fListener;
 
     public SimControllerButton(EventBus eventBus, Object name, Config config) {
         super(name, config);

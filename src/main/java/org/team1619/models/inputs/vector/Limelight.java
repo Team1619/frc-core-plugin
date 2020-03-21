@@ -8,27 +8,27 @@ import java.util.Map;
 
 public abstract class Limelight extends InputVector {
 
-    protected Map<String, Integer> fPipelines = new HashMap<>();
-    private Map<String, Double> fValues = new HashMap<>();
+    protected Map<String, Integer> mPipelines = new HashMap<>();
+    private Map<String, Double> mValues = new HashMap<>();
 
     public Limelight(Object name, Config config) {
         super(name, config);
 
         if (config.contains("pipelines")) {
             for (Map.Entry<String, Object> pipeline : config.getSubConfig("pipelines", "pipeline_config").getData().entrySet()) {
-                fPipelines.put(pipeline.getKey(), Integer.valueOf(pipeline.getValue().toString()));
+                mPipelines.put(pipeline.getKey(), Integer.valueOf(pipeline.getValue().toString()));
             }
         }
     }
 
     @Override
     public void update() {
-        fValues = getData();
+        mValues = getData();
     }
 
     @Override
     public Map<String, Double> get() {
-        return fValues;
+        return mValues;
     }
 
     @Override
