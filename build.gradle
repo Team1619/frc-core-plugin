@@ -21,7 +21,7 @@ allprojects {
 }
 
 dependencies {
-    implementation 'com.github.team1619:uacr-robot-core:v2020.0.0.0'
+    implementation 'com.github.team1619:uacr-robot-core:v2020.1.0.0'
 
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)

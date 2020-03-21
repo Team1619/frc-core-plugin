@@ -20,7 +20,7 @@ import org.uacr.models.inputs.numeric.InputNumeric;
 import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.models.outputs.bool.OutputBoolean;
 import org.uacr.models.outputs.numeric.OutputNumeric;
-import org.uacr.robot.ModelFactory;
+import org.uacr.robot.AbstractModelFactory;
 import org.uacr.shared.abstractions.*;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.YamlConfigParser;
@@ -28,7 +28,7 @@ import org.uacr.utilities.injection.Inject;
 import org.uacr.utilities.logging.LogManager;
 import org.uacr.utilities.logging.Logger;
 
-public class SimModelFactory extends ModelFactory {
+public class SimModelFactory extends AbstractModelFactory {
 
     private static final Logger sLogger = LogManager.getLogger(SimModelFactory.class);
 
