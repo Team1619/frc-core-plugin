@@ -2,7 +2,7 @@ package org.team1619.models.outputs.numeric;
 
 import org.uacr.models.exceptions.ConfigurationInvalidTypeException;
 import org.uacr.models.outputs.numeric.OutputNumeric;
-import org.uacr.robot.ModelFactory;
+import org.uacr.robot.AbstractModelFactory;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.YamlConfigParser;
 
@@ -20,7 +20,7 @@ public class MotorGroup extends OutputNumeric {
     private final CTREMotor fMaster;
     private final Set<CTREMotor> fSlaves = new HashSet<>();
 
-    public MotorGroup(Object name, Config config, YamlConfigParser parser, ModelFactory modelFactory) {
+    public MotorGroup(Object name, Config config, YamlConfigParser parser, AbstractModelFactory modelFactory) {
         super(name, config);
 
         String master = config.getString("master");
