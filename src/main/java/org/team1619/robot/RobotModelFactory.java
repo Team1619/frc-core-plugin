@@ -22,7 +22,7 @@ import org.uacr.models.inputs.numeric.InputNumeric;
 import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.models.outputs.bool.OutputBoolean;
 import org.uacr.models.outputs.numeric.OutputNumeric;
-import org.uacr.robot.ModelFactory;
+import org.uacr.robot.AbstractModelFactory;
 import org.uacr.shared.abstractions.InputValues;
 import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.shared.abstractions.OutputValues;
@@ -33,7 +33,7 @@ import org.uacr.utilities.injection.Inject;
 import org.uacr.utilities.logging.LogManager;
 import org.uacr.utilities.logging.Logger;
 
-public class RobotModelFactory extends ModelFactory {
+public class RobotModelFactory extends AbstractModelFactory {
 
     private static final Logger sLogger = LogManager.getLogger(RobotModelFactory.class);
 
