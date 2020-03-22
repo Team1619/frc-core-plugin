@@ -5,9 +5,9 @@ import org.uacr.utilities.Config;
 
 public abstract class DigitalSensor extends InputBoolean {
 
-    protected int fId;
-    private boolean fPreviousValue;
-    private boolean fValue;
+    protected final int fId;
+    private boolean mPreviousValue;
+    private boolean mValue;
 
     public DigitalSensor(Object name, Config config) {
         super(name, config);
@@ -19,25 +19,25 @@ public abstract class DigitalSensor extends InputBoolean {
 
     @Override
     public void initialize() {
-        fValue = getDigitalInputValue();
+        mValue = getDigitalInputValue();
     }
 
     @Override
     public void update() {
-        fPreviousValue = fValue;
-        fValue = getDigitalInputValue();
+        mPreviousValue = mValue;
+        mValue = getDigitalInputValue();
     }
 
     @Override
     public boolean get() {
-        return fIsInverted != fValue;
+        return fIsInverted != mValue;
     }
 
     @Override
     public DeltaType getDelta() {
-        if (!fPreviousValue && fValue) {
+        if (!mPreviousValue && mValue) {
             return DeltaType.RISING_EDGE;
-        } else if (fPreviousValue && !fValue) {
+        } else if (mPreviousValue && !mValue) {
             return DeltaType.FALLING_EDGE;
         } else {
             return DeltaType.NO_DELTA;

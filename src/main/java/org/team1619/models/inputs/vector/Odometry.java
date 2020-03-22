@@ -28,25 +28,26 @@ public class Odometry extends InputVector {
     private final String fNavx;
     private final String fLeftEncoder;
     private final String fRightEncoder;
-    private Map<String, Double> fNavxValues = new HashMap<>();
-    private double fLeftPosition = 0;
-    private double fRightPosition = 0;
-    private double fHeading = 0;
+    private Map<String, Double> mNavxValues;
+    private double mLeftPosition = 0;
+    private double mRightPosition = 0;
+    private double mHeading = 0;
 
-    private Pose2d fCurrentPosition;
+    private Pose2d mCurrentPosition;
 
     public Odometry(Object name, Config config, InputValues inputValues) {
         super(name, config);
 
         fConfig = config;
         fSharedInputValues = inputValues;
+        mNavxValues = new HashMap<>();
 
         fNavx = config.getString("navx");
 
         fLeftEncoder = config.getString("left_encoder");
         fRightEncoder = config.getString("right_encoder");
 
-        fCurrentPosition = new Pose2d();
+        mCurrentPosition = new Pose2d();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class Odometry extends InputVector {
             return;
         }
 
-        fHeading = getHeading();
+        mHeading = getHeading();
 
         double leftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
         double rightPosition = fSharedInputValues.getNumeric(fRightEncoder);
@@ -77,28 +78,28 @@ public class Odometry extends InputVector {
 
 		This could be improved later but in our testing it worked well.
 		 */
-        double distance = ((leftPosition - fLeftPosition) + (rightPosition - fRightPosition)) / 2;
+        double distance = ((leftPosition - mLeftPosition) + (rightPosition - mRightPosition)) / 2;
 
-        fCurrentPosition = new Pose2d(fCurrentPosition.add(new Vector(distance * Math.cos(Math.toRadians(fHeading)), distance * Math.sin(Math.toRadians(fHeading)))), fHeading);
+        mCurrentPosition = new Pose2d(mCurrentPosition.add(new Vector(distance * Math.cos(Math.toRadians(mHeading)), distance * Math.sin(Math.toRadians(mHeading)))), mHeading);
 
-        fLeftPosition = leftPosition;
-        fRightPosition = rightPosition;
+        mLeftPosition = leftPosition;
+        mRightPosition = rightPosition;
     }
 
     public void zeroPosition() {
-        fLeftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
-        fRightPosition = fSharedInputValues.getNumeric(fRightEncoder);
-        fCurrentPosition = new Pose2d();
+        mLeftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
+        mRightPosition = fSharedInputValues.getNumeric(fRightEncoder);
+        mCurrentPosition = new Pose2d();
     }
 
     @Override
     public Map<String, Double> get() {
-        return Map.of("x", fCurrentPosition.getX(), "y", fCurrentPosition.getY(), "heading", fCurrentPosition.getHeading());
+        return Map.of("x", mCurrentPosition.getX(), "y", mCurrentPosition.getY(), "heading", mCurrentPosition.getHeading());
     }
 
     private double getHeading() {
-        fNavxValues = fSharedInputValues.getVector(fNavx);
-        double heading = fNavxValues.getOrDefault("yaw", 0.0);
+        mNavxValues = fSharedInputValues.getVector(fNavx);
+        double heading = mNavxValues.getOrDefault("yaw", 0.0);
 
         if (heading > 180) heading = -(360 - heading);
 

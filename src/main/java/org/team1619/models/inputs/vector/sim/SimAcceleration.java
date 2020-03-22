@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class SimAcceleration extends Accelerometer {
 
-    private SimInputVectorListener fListener;
+    private final SimInputVectorListener fListener;
 
     public SimAcceleration(EventBus eventBus, Object name, Config config, InputValues inputValues) {
         super(name, config);

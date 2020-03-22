@@ -6,7 +6,7 @@ import org.uacr.utilities.Config;
 
 public class RobotJoystickAxis extends Axis {
 
-    private Joystick fJoystick;
+    private final Joystick fJoystick;
 
     public RobotJoystickAxis(Object name, Config config) {
         super(name, config);

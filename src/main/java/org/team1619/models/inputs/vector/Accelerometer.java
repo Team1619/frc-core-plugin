@@ -8,7 +8,7 @@ import java.util.Map;
 
 public abstract class Accelerometer extends InputVector {
 
-    private Map<String, Double> fAcceleration = new HashMap<>();
+    private Map<String, Double> mAcceleration = new HashMap<>();
 
     public Accelerometer(Object name, Config config) {
         super(name, config);
@@ -16,7 +16,7 @@ public abstract class Accelerometer extends InputVector {
 
     @Override
     public void update() {
-        fAcceleration = getAcceleration();
+        mAcceleration = getAcceleration();
     }
 
     @Override
@@ -26,7 +26,7 @@ public abstract class Accelerometer extends InputVector {
 
     @Override
     public Map<String, Double> get() {
-        return fAcceleration;
+        return mAcceleration;
     }
 
     @Override

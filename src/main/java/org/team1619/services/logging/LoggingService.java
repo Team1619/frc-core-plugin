@@ -21,11 +21,11 @@ public class LoggingService implements ScheduledService {
     private final OutputValues fSharedOutputValues;
     private final RobotConfiguration fRobotConfiguration;
     private final Dashboard fDashboard;
-    private double fPreviousTime;
-    private long FRAME_TIME_THRESHOLD;
-    private long FRAME_CYCLE_TIME_THRESHOLD;
+    private double mPreviousTime;
+    private long mFrameTimeThreshold;
+    private long mFrameCycleTimeThreshold;
 
-    private Set<String> fDesiredLogs = new HashSet<>();
+    private Set<String> fDesiredLogs;
 
     @Inject
     public LoggingService(InputValues inputValues, OutputValues outputValues, RobotConfiguration robotConfiguration, Dashboard dashboard) {
@@ -33,6 +33,7 @@ public class LoggingService implements ScheduledService {
         fRobotConfiguration = robotConfiguration;
         fSharedOutputValues = outputValues;
         fDashboard = dashboard;
+        fDesiredLogs = new HashSet<>();
     }
 
     @Override
@@ -54,9 +55,9 @@ public class LoggingService implements ScheduledService {
         valuesToLog = valuesToLog.substring(0, valuesToLog.length() - 2) + "]";
         sLogger.trace(valuesToLog);
 
-        fPreviousTime = System.currentTimeMillis();
-        FRAME_TIME_THRESHOLD = fRobotConfiguration.getInt("global_timing", "frame_time_threshold_logging_service");
-        FRAME_CYCLE_TIME_THRESHOLD = fRobotConfiguration.getInt("global_timing", "frame_cycle_time_threshold_info_thread");
+        mPreviousTime = System.currentTimeMillis();
+        mFrameTimeThreshold = fRobotConfiguration.getInt("global_timing", "frame_time_threshold_logging_service");
+        mFrameCycleTimeThreshold = fRobotConfiguration.getInt("global_timing", "frame_cycle_time_threshold_info_thread");
 
         fDashboard.initialize();
 
@@ -108,16 +109,16 @@ public class LoggingService implements ScheduledService {
         // Check for delayed frames
         double currentTime = System.currentTimeMillis();
         double frameTime = currentTime - frameStartTime;
-        double totalCycleTime = frameStartTime - fPreviousTime;
+        double totalCycleTime = frameStartTime - mPreviousTime;
         fSharedInputValues.setNumeric("ipn_frame_time_logging_service", frameTime);
         fSharedInputValues.setNumeric("ipn_frame_cycle_time_info_thread", totalCycleTime);
-        if (frameTime > FRAME_TIME_THRESHOLD) {
+        if (frameTime > mFrameTimeThreshold) {
             sLogger.debug("********** Logging Service frame time = {}", frameTime);
         }
-        if (totalCycleTime > FRAME_CYCLE_TIME_THRESHOLD) {
+        if (totalCycleTime > mFrameCycleTimeThreshold) {
             sLogger.debug("********** Info thread frame cycle time = {}", totalCycleTime);
         }
-        fPreviousTime = frameStartTime;
+        mPreviousTime = frameStartTime;
     }
 
     @Override

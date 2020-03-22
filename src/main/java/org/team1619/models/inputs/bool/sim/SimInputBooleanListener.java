@@ -8,7 +8,7 @@ public class SimInputBooleanListener {
 
     private final Object fName;
 
-    private boolean fValue = false;
+    private boolean mValue = false;
 
     public SimInputBooleanListener(EventBus eventBus, Object name) {
         fName = name;
@@ -16,13 +16,13 @@ public class SimInputBooleanListener {
     }
 
     public boolean get() {
-        return fValue;
+        return mValue;
     }
 
     @Subscribe
     public void onInputBooleanSet(SimInputBooleanSetEvent event) {
         if (event.name.equals(fName)) {
-            fValue = event.value;
+            mValue = event.value;
         }
     }
 }

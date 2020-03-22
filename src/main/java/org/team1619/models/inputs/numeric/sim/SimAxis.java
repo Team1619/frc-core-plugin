@@ -6,7 +6,7 @@ import org.uacr.utilities.Config;
 
 public class SimAxis extends Axis {
 
-    private SimInputNumericListener fListener;
+    private final SimInputNumericListener fListener;
 
     public SimAxis(EventBus eventBus, Object name, Config config) {
         super(name, config);

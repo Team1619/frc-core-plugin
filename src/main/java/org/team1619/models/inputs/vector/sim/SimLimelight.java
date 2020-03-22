@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class SimLimelight extends Limelight {
 
-    private SimInputVectorListener fListener;
+    private final SimInputVectorListener fListener;
 
     public SimLimelight(EventBus eventBus, Object name, Config config) {
         super(name, config);

@@ -8,7 +8,7 @@ public class SimInputNumericListener {
 
     private final Object fName;
 
-    private double fValue = 0.0;
+    private double mValue = 0.0;
 
     public SimInputNumericListener(EventBus eventBus, Object name) {
         eventBus.register(this);
@@ -16,13 +16,13 @@ public class SimInputNumericListener {
     }
 
     public double get() {
-        return fValue;
+        return mValue;
     }
 
     @Subscribe
     public void onInputNumericSet(SimInputNumericSetEvent event) {
         if (event.name.equals(fName)) {
-            fValue = event.value;
+            mValue = event.value;
         }
     }
 }
