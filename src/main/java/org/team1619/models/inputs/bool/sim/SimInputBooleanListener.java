@@ -21,8 +21,8 @@ public class SimInputBooleanListener {
 
     @Subscribe
     public void onInputBooleanSet(SimInputBooleanSetEvent event) {
-        if (event.name.equals(fName)) {
-            mValue = event.value;
+        if (event.fName.equals(fName)) {
+            mValue = event.fValue;
         }
     }
 }
