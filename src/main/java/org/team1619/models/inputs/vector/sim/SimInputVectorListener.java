@@ -23,8 +23,8 @@ public class SimInputVectorListener {
 
     @Subscribe
     public void onInputVectorSet(SimInputVectorSetEvent event) {
-        if (event.name.equals(fName)) {
-            mValues = event.values;
+        if (event.fName.equals(fName)) {
+            mValues = event.fValues;
         }
     }
 }

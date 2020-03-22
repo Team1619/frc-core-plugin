@@ -21,8 +21,8 @@ public class SimInputNumericListener {
 
     @Subscribe
     public void onInputNumericSet(SimInputNumericSetEvent event) {
-        if (event.name.equals(fName)) {
-            mValue = event.value;
+        if (event.fName.equals(fName)) {
+            mValue = event.fValue;
         }
     }
 }
