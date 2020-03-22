@@ -15,9 +15,9 @@ public class RobotDashboard implements Dashboard {
 
     private static final Logger sLogger = LogManager.getLogger(RobotDashboard.class);
     Preferences mPrefs = Preferences.getInstance();
-    SendableChooser<String> mAutoOrigin = new SendableChooser<>();
-    SendableChooser<String> mAutoDestination = new SendableChooser<>();
-    SendableChooser<String> mAutoAction = new SendableChooser<>();
+    SendableChooser<String> mAutoOrigin;
+    SendableChooser<String> mAutoDestination;
+    SendableChooser<String> mAutoAction;
     private InputValues mSharedInputValues;
     private String mPreviousAutoOrigin = "none";
     private String mPreviousAutoDestination = "none";
@@ -27,6 +27,9 @@ public class RobotDashboard implements Dashboard {
     @Inject
     public RobotDashboard(InputValues inputValues) {
         mSharedInputValues = inputValues;
+        mAutoOrigin = new SendableChooser<>();
+        mAutoDestination = new SendableChooser<>();
+        mAutoAction = new SendableChooser<>();
     }
 
     @Override

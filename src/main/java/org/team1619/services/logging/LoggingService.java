@@ -25,7 +25,7 @@ public class LoggingService implements ScheduledService {
     private long mFrameTimeThreshold;
     private long mFrameCycleTimeThreshold;
 
-    private Set<String> fDesiredLogs = new HashSet<>();
+    private Set<String> fDesiredLogs;
 
     @Inject
     public LoggingService(InputValues inputValues, OutputValues outputValues, RobotConfiguration robotConfiguration, Dashboard dashboard) {
@@ -33,6 +33,7 @@ public class LoggingService implements ScheduledService {
         fRobotConfiguration = robotConfiguration;
         fSharedOutputValues = outputValues;
         fDashboard = dashboard;
+        fDesiredLogs = new HashSet<>();
     }
 
     @Override

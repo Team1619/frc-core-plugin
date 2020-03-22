@@ -10,10 +10,12 @@ public abstract class Navx extends InputVector {
 
     protected Map<String, Boolean> mIsRaidans;
     protected Map<String, Boolean> mIsInverted;
-    protected Map<String, Double> mNavxValues = new HashMap<>();
+    protected Map<String, Double> mNavxValues;
 
     public Navx(Object name, Config config) {
         super(name, config);
+
+        mNavxValues = new HashMap<>();
 
         //Is Inverted
         mIsInverted = new HashMap<>();

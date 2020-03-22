@@ -66,9 +66,9 @@ public class RobotLimelight extends Limelight {
 
     @Override
     public void processFlag(String flag) {
-        if (mPipelines.containsKey(flag)) {
+        if (fPipelines.containsKey(flag)) {
             NetworkTableEntry pipelineEntry = mTable.getEntry("pipeline");
-            pipelineEntry.setNumber(mPipelines.get(flag));
+            pipelineEntry.setNumber(fPipelines.get(flag));
         } else if (flag.contains("pnp")) {
             NetworkTableEntry pnpEntry = mTable.getEntry("stream");
             switch (flag) {

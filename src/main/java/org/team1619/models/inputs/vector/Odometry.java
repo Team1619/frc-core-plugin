@@ -28,7 +28,7 @@ public class Odometry extends InputVector {
     private final String fNavx;
     private final String fLeftEncoder;
     private final String fRightEncoder;
-    private Map<String, Double> mNavxValues = new HashMap<>();
+    private Map<String, Double> mNavxValues;
     private double mLeftPosition = 0;
     private double mRightPosition = 0;
     private double mHeading = 0;
@@ -40,6 +40,7 @@ public class Odometry extends InputVector {
 
         fConfig = config;
         fSharedInputValues = inputValues;
+        mNavxValues = new HashMap<>();
 
         fNavx = config.getString("navx");
 
