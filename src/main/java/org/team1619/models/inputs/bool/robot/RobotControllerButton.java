@@ -18,21 +18,21 @@ public class RobotControllerButton extends Button {
     public boolean isPressed() {
         switch (fButton) {
             case "a":
-                return this.fController.getAButton();
+                return fController.getAButton();
             case "x":
-                return this.fController.getXButton();
+                return fController.getXButton();
             case "y":
-                return this.fController.getYButton();
+                return fController.getYButton();
             case "b":
-                return this.fController.getBButton();
+                return fController.getBButton();
             case "start":
-                return this.fController.getStartButton();
+                return fController.getStartButton();
             case "back":
-                return this.fController.getBackButton();
+                return fController.getBackButton();
             case "left_bumper":
-                return this.fController.getBumper(GenericHID.Hand.kLeft);
+                return fController.getBumper(GenericHID.Hand.kLeft);
             case "right_bumper":
-                return this.fController.getBumper(GenericHID.Hand.kRight);
+                return fController.getBumper(GenericHID.Hand.kRight);
             case "left_stick_button":
                 return fController.getStickButton(GenericHID.Hand.kLeft);
             case "right_stick_button":
@@ -40,17 +40,17 @@ public class RobotControllerButton extends Button {
             case "d_pad_up":
                 //getPOV(0) returns 0 when not plugged in
                 if (fController.getPOVCount() != 0) {
-                    return this.fController.getPOV(0) == 0;
+                    return fController.getPOV(0) == 0;
                 }
                 return false;
             case "d_pad_down":
-                return this.fController.getPOV(0) == 180;
+                return fController.getPOV(0) == 180;
 
             case "d_pad_left":
-                return this.fController.getPOV(0) == 270;
+                return fController.getPOV(0) == 270;
 
             case "d_pad_right":
-                return this.fController.getPOV(0) == 90;
+                return fController.getPOV(0) == 90;
             case "right_trigger":
                 return fController.getRawAxis(3) > 0.5;
             case "left_trigger":

@@ -8,8 +8,8 @@ public abstract class Button extends InputBoolean {
     protected final int fPort;
     protected final String fButton;
 
-    private boolean mIsPressed = false;
     private DeltaType mDelta = DeltaType.NO_DELTA;
+    private boolean mIsPressed = false;
 
     public Button(Object name, Config config) {
         super(name, config);

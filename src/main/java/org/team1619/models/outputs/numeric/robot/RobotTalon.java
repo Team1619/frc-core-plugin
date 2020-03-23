@@ -20,11 +20,12 @@ public class RobotTalon extends Talon {
 
     private static final int CAN_TIMEOUT_MILLISECONDS = 10;
 
+    private final ObjectsDirectory fSharedObjectsDirectory;
     private final PowerDistributionPanel fPDP;
     private final TalonSRX fMotor;
     private final Map<String, Map<String, Double>> fProfiles;
-    private ObjectsDirectory fSharedObjectsDirectory;
-    private String fCurrentProfileName = "none";
+
+    private String mCurrentProfileName = "none";
 
     public RobotTalon(Object name, Config config, ObjectsDirectory objectsDirectory, InputValues inputValues) {
         super(name, config, inputValues);
@@ -123,7 +124,7 @@ public class RobotTalon extends Talon {
                     throw new RuntimeException("PIDF Profile name must be specified");
                 }
 
-                if (!profile.equals(fCurrentProfileName)) {
+                if (!profile.equals(mCurrentProfileName)) {
                     setProfile(profile);
                 }
 
@@ -134,7 +135,7 @@ public class RobotTalon extends Talon {
                     throw new RuntimeException("PIDF Profile name must be specified");
                 }
 
-                if (!profile.equals(fCurrentProfileName)) {
+                if (!profile.equals(mCurrentProfileName)) {
                     setProfile(profile);
                 }
 
@@ -145,7 +146,7 @@ public class RobotTalon extends Talon {
                     throw new RuntimeException("PIDF Profile name must be specified");
                 }
 
-                if (!profile.equals(fCurrentProfileName)) {
+                if (!profile.equals(mCurrentProfileName)) {
                     setProfile(profile);
                 }
 
@@ -196,6 +197,6 @@ public class RobotTalon extends Talon {
         //S Curve values tend to cause slamming and jerking
         fMotor.configMotionSCurveStrength(profile.getInt("s_curve", 0), CAN_TIMEOUT_MILLISECONDS);
 
-        fCurrentProfileName = profileName;
+        mCurrentProfileName = profileName;
     }
 }

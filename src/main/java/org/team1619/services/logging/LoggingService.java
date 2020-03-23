@@ -21,6 +21,7 @@ public class LoggingService implements ScheduledService {
     private final OutputValues fSharedOutputValues;
     private final RobotConfiguration fRobotConfiguration;
     private final Dashboard fDashboard;
+
     private double mPreviousTime;
     private long mFrameTimeThreshold;
     private long mFrameCycleTimeThreshold;

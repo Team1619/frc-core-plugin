@@ -6,6 +6,7 @@ import org.uacr.utilities.Config;
 public abstract class DigitalSensor extends InputBoolean {
 
     protected final int fId;
+
     private boolean mPreviousValue;
     private boolean mValue;
 

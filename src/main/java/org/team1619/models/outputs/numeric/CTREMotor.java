@@ -9,8 +9,8 @@ import org.uacr.utilities.Config;
 
 public abstract class CTREMotor extends OutputNumeric {
 
-    protected final int fDeviceNumber;
     protected final boolean fIsBrakeModeEnabled;
+    protected final int fDeviceNumber;
 
     public CTREMotor(Object name, Config config) {
         super(name, config);

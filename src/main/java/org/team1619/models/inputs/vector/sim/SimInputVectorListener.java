@@ -9,6 +9,7 @@ import java.util.Map;
 public class SimInputVectorListener {
 
     private final Object fName;
+
     private Map<String, Double> mValues;
 
     public SimInputVectorListener(EventBus eventBus, Object name, Map<String, Double> startingValues) {

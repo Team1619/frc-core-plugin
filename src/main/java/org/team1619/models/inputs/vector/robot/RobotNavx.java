@@ -14,6 +14,7 @@ public class RobotNavx extends Navx {
     private static final Logger sLogger = LogManager.getLogger(RobotNavx.class);
 
     private final AHRS fNavx;
+
     private double mNavxYaw;
     private double mNavxRoll;
     private double mNavxPitch;

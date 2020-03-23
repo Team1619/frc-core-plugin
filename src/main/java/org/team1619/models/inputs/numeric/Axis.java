@@ -18,6 +18,7 @@ public abstract class Axis extends InputNumeric {
 
         fPort = config.getInt("port");
         fAxis = config.getInt("axis");
+
         mDeadBand = config.getDouble("deadband", 0.0);
         mScale = config.getDouble("scale", 1.0);
     }

@@ -10,6 +10,7 @@ import java.util.Map;
 public class RobotAcceleration extends Accelerometer {
 
     private final InputValues fSharedInputValues;
+
     private Map<String, Double> mNavxValues;
 
     public RobotAcceleration(Object name, Config config, InputValues inputValues) {

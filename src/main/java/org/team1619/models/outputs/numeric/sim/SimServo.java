@@ -8,7 +8,7 @@ import org.uacr.utilities.Config;
 
 public class SimServo extends org.team1619.models.outputs.numeric.Servo {
 
-    private double fOutput = 0.0;
+    private double mOutput = 0.0;
 
     public SimServo(Object name, Config config) {
         super(name, config);
@@ -21,6 +21,6 @@ public class SimServo extends org.team1619.models.outputs.numeric.Servo {
 
     @Override
     public void setHardware(String outputType, double outputValue, String profile) {
-        fOutput = outputValue;
+        mOutput = outputValue;
     }
 }
