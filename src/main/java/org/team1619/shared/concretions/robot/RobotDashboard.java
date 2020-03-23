@@ -28,6 +28,7 @@ public class RobotDashboard implements Dashboard {
     @Inject
     public RobotDashboard(InputValues inputValues) {
         fSharedInputValues = inputValues;
+
         mAutoOrigin = new SendableChooser<>();
         mAutoDestination = new SendableChooser<>();
         mAutoAction = new SendableChooser<>();

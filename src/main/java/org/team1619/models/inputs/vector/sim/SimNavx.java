@@ -12,6 +12,7 @@ import java.util.Map;
 public class SimNavx extends Navx {
 
     private static final Logger sLogger = LogManager.getLogger(SimNavx.class);
+
     private final SimInputVectorListener fListener;
 
     private double mNavxYaw;
