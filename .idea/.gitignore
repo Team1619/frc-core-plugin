@@ -2,3 +2,6 @@
 /workspace.xml
 /jarRepositories.xml
 /uiDesigner.xml
+/misc.xml
+/gradle.xml
+/frc-core-plugin.iml
