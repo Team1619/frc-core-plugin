@@ -9,12 +9,14 @@ public abstract class AnalogSensor extends InputNumeric {
 
     private static final Logger sLogger = LogManager.getLogger(AnalogSensor.class);
     protected final int fPort;
+
     private double mPreviousVoltage;
     private double mDelta;
 
     public AnalogSensor(Object name, Config config) {
         super(name, config);
         fPort = config.getInt("port");
+
         mPreviousVoltage = 0.0;
         mDelta = 0.0;
     }

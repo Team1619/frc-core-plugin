@@ -12,18 +12,18 @@ import javax.annotation.Nullable;
 
 public class SimVictor extends Victor {
 
-    private double fOutput = 0.0;
     @Nullable
-    private Integer fMotor;
+    private Integer mMotor;
+    private double mOutput = 0.0;
 
     public SimVictor(Object name, Config config, ObjectsDirectory objectsDirectory) {
         super(name, config);
 
         // Included to mimic RobotTalon for testing
-        fMotor = (Integer) objectsDirectory.getHardwareObject(fDeviceNumber);
-        if (fMotor == null) {
-            fMotor = fDeviceNumber;
-            objectsDirectory.setHardwareObject(fDeviceNumber, fMotor);
+        mMotor = (Integer) objectsDirectory.getHardwareObject(fDeviceNumber);
+        if (mMotor == null) {
+            mMotor = fDeviceNumber;
+            objectsDirectory.setHardwareObject(fDeviceNumber, mMotor);
         }
     }
 
@@ -34,6 +34,6 @@ public class SimVictor extends Victor {
 
     @Override
     public void setHardware(String outputType, double outputValue, String profile) {
-        fOutput = outputValue;
+        mOutput = outputValue;
     }
 }

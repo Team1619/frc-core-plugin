@@ -24,10 +24,10 @@ public class Odometry extends InputVector {
 
     protected final Config fConfig;
     protected final InputValues fSharedInputValues;
-
     private final String fNavx;
     private final String fLeftEncoder;
     private final String fRightEncoder;
+
     private Map<String, Double> mNavxValues;
     private double mLeftPosition = 0;
     private double mRightPosition = 0;

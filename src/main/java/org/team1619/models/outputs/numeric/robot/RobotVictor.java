@@ -17,8 +17,8 @@ import javax.annotation.Nullable;
 
 public class RobotVictor extends Victor {
 
+    private final ObjectsDirectory fSharedObjectsDirectory;
     private final VictorSPX fMotor;
-    private ObjectsDirectory fSharedObjectsDirectory;
 
     public RobotVictor(Object name, Config config, ObjectsDirectory objectsDirectory) {
         super(name, config);

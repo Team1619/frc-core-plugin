@@ -21,10 +21,11 @@ public class SimTalon extends Talon {
     private final SimInputNumericListener fPositionListener;
     private final SimInputNumericListener fVelocityListener;
     private final Map<String, Map<String, Double>> fProfiles;
-    private double fOutput = 0.0;
+
     @Nullable
-    private Integer fMotor;
-    private String fCurrentProfileName = "none";
+    private Integer mMotor;
+    private double mOutput = 0.0;
+    private String mCurrentProfileName = "none";
 
     public SimTalon(Object name, Config config, EventBus eventBus, ObjectsDirectory objectsDirectory, InputValues inputValues) {
         super(name, config, inputValues);
@@ -33,12 +34,12 @@ public class SimTalon extends Talon {
         fVelocityListener = new SimInputNumericListener(eventBus, fVelocityInputName);
 
         // Included to mimic RobotTalon for testing
-        fMotor = (Integer) objectsDirectory.getHardwareObject(fDeviceNumber);
+        mMotor = (Integer) objectsDirectory.getHardwareObject(fDeviceNumber);
         //noinspection ConstantConditions
-        if (fMotor == null) {
+        if (mMotor == null) {
             Integer deviceNumber = fDeviceNumber;
-            fMotor = deviceNumber;
-            objectsDirectory.setHardwareObject(fDeviceNumber, fMotor);
+            mMotor = deviceNumber;
+            objectsDirectory.setHardwareObject(fDeviceNumber, mMotor);
         }
 
         if (!(config.get("profiles", new HashMap<>()) instanceof Map)) throw new RuntimeException();
@@ -64,32 +65,32 @@ public class SimTalon extends Talon {
 
         switch (outputType) {
             case "percent":
-                fOutput = outputValue;
+                mOutput = outputValue;
                 break;
             case "follower":
-                fOutput = outputValue;
+                mOutput = outputValue;
                 break;
             case "velocity":
                 if (profile.equals("none")) {
                     throw new RuntimeException("PIDF Profile name must be specified");
                 }
 
-                if (!profile.equals(fCurrentProfileName)) {
+                if (!profile.equals(mCurrentProfileName)) {
                     if (!fProfiles.containsKey(profile)) {
                         throw new RuntimeException("PIDF Profile " + profile + " doesn't exist");
                     }
 
-                    fCurrentProfileName = profile;
+                    mCurrentProfileName = profile;
                 }
 
-                fOutput = outputValue;
+                mOutput = outputValue;
 
                 break;
             case "position":
-                fOutput = outputValue;
+                mOutput = outputValue;
                 break;
             case "motion_magic":
-                fOutput = outputValue;
+                mOutput = outputValue;
                 break;
             default:
                 throw new RuntimeException("No output type " + outputType + " for TalonSRX");
