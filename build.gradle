@@ -26,9 +26,9 @@ allprojects {
 
 dependencies {
     implementation 'com.github.team1619:uacr-robot-core:2020.4.0.2'
-    implementation (name: 'uacr-robot-core', ext: 'jar')
+//    implementation (name: 'uacr-robot-core', ext: 'jar')
 
- //   implementation (group: 'com.google.guava', name: 'guava', version: '25.1-jre')
+    implementation (group: 'com.google.guava', name: 'guava', version: '25.1-jre')
 
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
