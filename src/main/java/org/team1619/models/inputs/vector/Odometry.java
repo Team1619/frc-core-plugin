@@ -80,7 +80,7 @@ public class Odometry extends InputVector {
 		 */
         double distance = ((leftPosition - mLeftPosition) + (rightPosition - mRightPosition)) / 2;
 
-        mCurrentPosition = new Pose2d(mCurrentPosition.add(new Vector(distance * Math.cos(Math.toRadians(mHeading)), distance * Math.sin(Math.toRadians(mHeading)))), mHeading);
+        mCurrentPosition = new Pose2d(mCurrentPosition.add(new Vector(distance, mHeading)), mHeading);
 
         mLeftPosition = leftPosition;
         mRightPosition = rightPosition;
