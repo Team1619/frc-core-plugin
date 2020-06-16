@@ -5,6 +5,7 @@ import org.team1619.models.inputs.bool.sim.SimDigitalSensor;
 import org.team1619.models.inputs.numeric.sim.SimAnalogSensor;
 import org.team1619.models.inputs.numeric.sim.SimAxis;
 import org.team1619.models.inputs.vector.Odometry;
+import org.team1619.models.inputs.vector.SwerveOdometry;
 import org.team1619.models.inputs.vector.sim.SimAcceleration;
 import org.team1619.models.inputs.vector.sim.SimLimelight;
 import org.team1619.models.inputs.vector.sim.SimNavx;
@@ -114,6 +115,8 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
                 return new SimAcceleration(fEventBus, name, config, fSharedInputValues);
             case "odometry_input":
                 return new Odometry(name, config, fSharedInputValues);
+            case "swerve_odometry_input":
+                return new SwerveOdometry(name, config, fSharedInputValues);
             case "limelight":
                 return new SimLimelight(fEventBus, name, config);
             case "navx":
