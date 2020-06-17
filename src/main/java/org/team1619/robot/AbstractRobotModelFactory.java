@@ -7,6 +7,7 @@ import org.team1619.models.inputs.numeric.robot.RobotAnalogSensor;
 import org.team1619.models.inputs.numeric.robot.RobotControllerAxis;
 import org.team1619.models.inputs.numeric.robot.RobotJoystickAxis;
 import org.team1619.models.inputs.vector.Odometry;
+import org.team1619.models.inputs.vector.SwerveOdometry;
 import org.team1619.models.inputs.vector.robot.RobotAcceleration;
 import org.team1619.models.inputs.vector.robot.RobotLimelight;
 import org.team1619.models.inputs.vector.robot.RobotNavx;
@@ -117,6 +118,8 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
                 return new RobotAcceleration(name, config, fSharedInputValues);
             case "odometry_input":
                 return new Odometry(name, config, fSharedInputValues);
+            case "swerve_odometry_input":
+                return new SwerveOdometry(name, config, fSharedInputValues);
             case "limelight":
                 return new RobotLimelight(name, config);
             case "navx":
