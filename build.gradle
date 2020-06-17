@@ -11,16 +11,8 @@ targetCompatibility = JavaVersion.VERSION_11
 repositories {
     mavenCentral()
 
-}
-
-allprojects {
-    repositories {
-        flatDir{
-            dirs '../jar-files'
-        }
-        maven {
-            url 'https://jitpack.io'
-        }
+    maven {
+        url 'https://jitpack.io'
     }
 }
 
