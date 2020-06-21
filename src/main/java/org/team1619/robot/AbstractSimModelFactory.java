@@ -33,12 +33,14 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
 
     private static final Logger sLogger = LogManager.getLogger(AbstractSimModelFactory.class);
 
-    private final EventBus fEventBus;
+    private final EventBus fSharedEventBus;
+    private final HardwareFactory fSharedHardwareFactory;
 
     @Inject
-    public AbstractSimModelFactory(EventBus eventBus, InputValues inputValues, OutputValues outputValues, RobotConfiguration robotConfiguration, ObjectsDirectory objectsDirectory) {
+    public AbstractSimModelFactory(EventBus eventBus, HardwareFactory hardwareFactory, InputValues inputValues, OutputValues outputValues, RobotConfiguration robotConfiguration, ObjectsDirectory objectsDirectory) {
         super(inputValues, outputValues, robotConfiguration, objectsDirectory);
-        fEventBus = eventBus;
+        fSharedEventBus = eventBus;
+        fSharedHardwareFactory = hardwareFactory;
     }
 
     @Override
@@ -47,9 +49,9 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "talon":
-                return new SimTalon(name, config, fEventBus, fSharedObjectDirectory, fSharedInputValues);
+                return new SimTalon(name, config, fSharedHardwareFactory, fSharedEventBus, fSharedInputValues);
             case "victor":
-                return new SimVictor(name, config, fSharedObjectDirectory);
+                return new SimVictor(name, config, fSharedHardwareFactory);
             case "motor_group":
                 return new MotorGroup(name, config, parser, this);
             case "servo":
@@ -80,11 +82,11 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "joystick_button":
-                return new SimControllerButton(fEventBus, name, config);
+                return new SimControllerButton(fSharedEventBus, name, config);
             case "controller_button":
-                return new SimControllerButton(fEventBus, name, config);
+                return new SimControllerButton(fSharedEventBus, name, config);
             case "digital_input":
-                return new SimDigitalSensor(fEventBus, name, config);
+                return new SimDigitalSensor(fSharedEventBus, name, config);
             default:
                 return super.createInputBoolean(name, config);
         }
@@ -96,11 +98,11 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "joystick_axis":
-                return new SimAxis(fEventBus, name, config);
+                return new SimAxis(fSharedEventBus, name, config);
             case "controller_axis":
-                return new SimAxis(fEventBus, name, config);
+                return new SimAxis(fSharedEventBus, name, config);
             case "analog_sensor":
-                return new SimAnalogSensor(fEventBus, name, config);
+                return new SimAnalogSensor(fSharedEventBus, name, config);
             default:
                 return super.createInputNumeric(name, config);
         }
@@ -112,15 +114,15 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "accelerometer_input":
-                return new SimAcceleration(fEventBus, name, config, fSharedInputValues);
+                return new SimAcceleration(fSharedEventBus, name, config, fSharedInputValues);
             case "odometry_input":
                 return new Odometry(name, config, fSharedInputValues);
             case "swerve_odometry_input":
                 return new SwerveOdometry(name, config, fSharedInputValues);
             case "limelight":
-                return new SimLimelight(fEventBus, name, config);
+                return new SimLimelight(fSharedEventBus, name, config);
             case "navx":
-                return new SimNavx(fEventBus, name, config);
+                return new SimNavx(fSharedEventBus, name, config);
             default:
                 return super.createInputVector(name, config);
         }

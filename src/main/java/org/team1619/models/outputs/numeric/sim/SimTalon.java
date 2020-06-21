@@ -4,6 +4,7 @@ import org.team1619.models.inputs.numeric.sim.SimInputNumericListener;
 import org.team1619.models.outputs.numeric.Talon;
 import org.uacr.events.sim.SimInputNumericSetEvent;
 import org.uacr.shared.abstractions.EventBus;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.shared.abstractions.InputValues;
 import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.utilities.Config;
@@ -21,26 +22,19 @@ public class SimTalon extends Talon {
     private final SimInputNumericListener fPositionListener;
     private final SimInputNumericListener fVelocityListener;
     private final Map<String, Map<String, Double>> fProfiles;
+    private final Integer fMotor;
 
-    @Nullable
-    private Integer mMotor;
     private double mOutput = 0.0;
     private String mCurrentProfileName = "none";
 
-    public SimTalon(Object name, Config config, EventBus eventBus, ObjectsDirectory objectsDirectory, InputValues inputValues) {
+    public SimTalon(Object name, Config config, HardwareFactory hardwareFactory, EventBus eventBus, InputValues inputValues) {
         super(name, config, inputValues);
 
         fPositionListener = new SimInputNumericListener(eventBus, fPositionInputName);
         fVelocityListener = new SimInputNumericListener(eventBus, fVelocityInputName);
 
         // Included to mimic RobotTalon for testing
-        mMotor = (Integer) objectsDirectory.getHardwareObject(fDeviceNumber);
-        //noinspection ConstantConditions
-        if (mMotor == null) {
-            Integer deviceNumber = fDeviceNumber;
-            mMotor = deviceNumber;
-            objectsDirectory.setHardwareObject(fDeviceNumber, mMotor);
-        }
+        fMotor = hardwareFactory.get(Integer.class, fDeviceNumber);
 
         if (!(config.get("profiles", new HashMap<>()) instanceof Map)) throw new RuntimeException();
         fProfiles = (Map<String, Map<String, Double>>) config.get("profiles", new HashMap<>());

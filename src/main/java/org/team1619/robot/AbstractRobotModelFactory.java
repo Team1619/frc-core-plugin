@@ -24,10 +24,7 @@ import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.models.outputs.bool.OutputBoolean;
 import org.uacr.models.outputs.numeric.OutputNumeric;
 import org.uacr.robot.AbstractModelFactory;
-import org.uacr.shared.abstractions.InputValues;
-import org.uacr.shared.abstractions.ObjectsDirectory;
-import org.uacr.shared.abstractions.OutputValues;
-import org.uacr.shared.abstractions.RobotConfiguration;
+import org.uacr.shared.abstractions.*;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.YamlConfigParser;
 import org.uacr.utilities.injection.Inject;
@@ -38,9 +35,13 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
 
     private static final Logger sLogger = LogManager.getLogger(AbstractRobotModelFactory.class);
 
+    private final HardwareFactory fSharedHardwareFactory;
+
     @Inject
-    public AbstractRobotModelFactory(InputValues inputValues, OutputValues outputValues, RobotConfiguration robotConfiguration, ObjectsDirectory objectsDirectory) {
+    public AbstractRobotModelFactory(HardwareFactory hardwareFactory, InputValues inputValues, OutputValues outputValues, RobotConfiguration robotConfiguration, ObjectsDirectory objectsDirectory) {
         super(inputValues, outputValues, robotConfiguration, objectsDirectory);
+
+        fSharedHardwareFactory = hardwareFactory;
     }
 
     @Override
@@ -49,15 +50,15 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "talon":
-                return new RobotTalon(name, config, fSharedObjectDirectory, fSharedInputValues);
+                return new RobotTalon(name, config, fSharedHardwareFactory, fSharedInputValues);
             case "victor":
-                return new RobotVictor(name, config, fSharedObjectDirectory);
+                return new RobotVictor(name, config, fSharedHardwareFactory);
             case "motor_group":
                 return new MotorGroup(name, config, parser, this);
             case "servo":
-                return new RobotServo(name, config);
+                return new RobotServo(name, config, fSharedHardwareFactory);
             case "rumble":
-                return new RobotRumble(name, config);
+                return new RobotRumble(name, config, fSharedHardwareFactory);
             default:
                 return super.createOutputNumeric(name, config, parser);
         }
@@ -69,9 +70,9 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "solenoid_single":
-                return new RobotSolenoidSingle(name, config);
+                return new RobotSolenoidSingle(name, config, fSharedHardwareFactory);
             case "solenoid_double":
-                return new RobotSolenoidDouble(name, config);
+                return new RobotSolenoidDouble(name, config, fSharedHardwareFactory);
             default:
                 return super.createOutputBoolean(name, config, parser);
         }
@@ -83,11 +84,11 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "joystick_button":
-                return new RobotJoystickButton(name, config);
+                return new RobotJoystickButton(name, config, fSharedHardwareFactory);
             case "controller_button":
-                return new RobotControllerButton(name, config);
+                return new RobotControllerButton(name, config, fSharedHardwareFactory);
             case "digital_input":
-                return new RobotDigitalSensor(name, config);
+                return new RobotDigitalSensor(name, config, fSharedHardwareFactory);
             default:
                 return super.createInputBoolean(name, config);
         }
@@ -99,11 +100,11 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
 
         switch (config.getType()) {
             case "joystick_axis":
-                return new RobotJoystickAxis(name, config);
+                return new RobotJoystickAxis(name, config, fSharedHardwareFactory);
             case "controller_axis":
-                return new RobotControllerAxis(name, config);
+                return new RobotControllerAxis(name, config, fSharedHardwareFactory);
             case "analog_sensor":
-                return new RobotAnalogSensor(name, config);
+                return new RobotAnalogSensor(name, config, fSharedHardwareFactory);
             default:
                 return super.createInputNumeric(name, config);
         }
@@ -123,7 +124,7 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
             case "limelight":
                 return new RobotLimelight(name, config);
             case "navx":
-                return new RobotNavx(name, config);
+                return new RobotNavx(name, config, fSharedHardwareFactory);
             default:
                 return super.createInputVector(name, config);
         }

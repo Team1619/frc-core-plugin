@@ -1,16 +1,17 @@
 package org.team1619.models.outputs.bool.robot;
 
 import org.team1619.models.outputs.bool.SolenoidSingle;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
 public class RobotSolenoidSingle extends SolenoidSingle {
 
     private final edu.wpi.first.wpilibj.Solenoid fWpiSolenoid;
 
-    public RobotSolenoidSingle(Object name, Config config) {
+    public RobotSolenoidSingle(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
 
-        fWpiSolenoid = new edu.wpi.first.wpilibj.Solenoid(fDeviceNumber);
+        fWpiSolenoid = hardwareFactory.get(edu.wpi.first.wpilibj.Solenoid.class, fDeviceNumber);
     }
 
     @Override

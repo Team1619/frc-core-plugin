@@ -1,16 +1,18 @@
 package org.team1619.models.inputs.bool.robot;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import org.team1619.models.inputs.bool.DigitalSensor;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
 public class RobotDigitalSensor extends DigitalSensor {
 
-    private final edu.wpi.first.wpilibj.DigitalInput fSensor;
+    private final DigitalInput fSensor;
 
-    public RobotDigitalSensor(Object name, Config config) {
+    public RobotDigitalSensor(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
 
-        fSensor = new edu.wpi.first.wpilibj.DigitalInput(fId);
+        fSensor = hardwareFactory.get(DigitalInput.class, fId);
     }
 
     @Override

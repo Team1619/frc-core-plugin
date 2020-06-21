@@ -1,17 +1,19 @@
 package org.team1619.models.inputs.numeric.robot;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import org.team1619.models.inputs.numeric.AnalogSensor;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
 public class RobotAnalogSensor extends AnalogSensor {
 
-    private final edu.wpi.first.wpilibj.AnalogInput fAnalogLogInput;
+    private final AnalogInput fAnalogLogInput;
 
-    public RobotAnalogSensor(Object name, Config config) {
+    public RobotAnalogSensor(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
-        fAnalogLogInput = new edu.wpi.first.wpilibj.AnalogInput(fPort);
-        fAnalogLogInput.resetAccumulator();
 
+        fAnalogLogInput = hardwareFactory.get(AnalogInput.class, fPort);
+        fAnalogLogInput.resetAccumulator();
     }
 
     @Override

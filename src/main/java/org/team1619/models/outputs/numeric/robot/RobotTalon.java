@@ -4,11 +4,10 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import org.team1619.models.outputs.numeric.Talon;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.shared.abstractions.InputValues;
-import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.utilities.Config;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,37 +19,20 @@ public class RobotTalon extends Talon {
 
     private static final int CAN_TIMEOUT_MILLISECONDS = 10;
 
-    private final ObjectsDirectory fSharedObjectsDirectory;
+    private final HardwareFactory fHardwareFactory;
     private final PowerDistributionPanel fPDP;
     private final TalonSRX fMotor;
     private final Map<String, Map<String, Double>> fProfiles;
 
     private String mCurrentProfileName = "none";
 
-    public RobotTalon(Object name, Config config, ObjectsDirectory objectsDirectory, InputValues inputValues) {
+    public RobotTalon(Object name, Config config, HardwareFactory hardwareFactory, InputValues inputValues) {
         super(name, config, inputValues);
 
-        fSharedObjectsDirectory = objectsDirectory;
+        fHardwareFactory = hardwareFactory;
 
-        @Nullable
-        Object pdpObject = fSharedObjectsDirectory.getHardwareObject("pdp");
-
-        if (pdpObject == null) {
-            fPDP = new PowerDistributionPanel();
-            fSharedObjectsDirectory.setHardwareObject("pdp", fPDP);
-        } else {
-            fPDP = (PowerDistributionPanel) pdpObject;
-        }
-
-        // Only create one WPILib TalonSRX class per physical talon (device number). Otherwise, the physical talon gets confused getting instructions from multiple TalonSRX classes
-        @Nullable
-        Object motorObject = fSharedObjectsDirectory.getHardwareObject(fDeviceNumber);
-        if (motorObject == null) {
-            fMotor = new TalonSRX(fDeviceNumber);
-            fSharedObjectsDirectory.setHardwareObject(fDeviceNumber, fMotor);
-        } else {
-            fMotor = (TalonSRX) motorObject;
-        }
+        fPDP = fHardwareFactory.get(PowerDistributionPanel.class);
+        fMotor = fHardwareFactory.get(TalonSRX.class, fDeviceNumber);
 
         fMotor.configFactoryDefault(CAN_TIMEOUT_MILLISECONDS);
 
@@ -112,11 +94,7 @@ public class RobotTalon extends Talon {
                 fMotor.set(ControlMode.PercentOutput, outputValue * fPercentScalar);
                 break;
             case "follower":
-                @Nullable
-                Object followerMotor = fSharedObjectsDirectory.getHardwareObject((int) outputValue);
-                if (followerMotor != null) {
-                    fMotor.follow((IMotorController) followerMotor, FollowerType.PercentOutput);
-                }
+                fMotor.follow(fHardwareFactory.get(TalonSRX.class, (int) outputValue), FollowerType.PercentOutput);
                 break;
             case "velocity":
 
