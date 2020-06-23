@@ -3,6 +3,7 @@ package org.team1619.models.outputs.numeric.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import org.team1619.models.outputs.numeric.Rumble;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
 /**
@@ -15,9 +16,10 @@ public class RobotRumble extends Rumble {
 
     private double fAdjustedOutput;
 
-    public RobotRumble(Object name, Config config) {
+    public RobotRumble(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
-        fRumble = new XboxController(fPort);
+
+        fRumble = hardwareFactory.get(XboxController.class, fPort);
 
         fAdjustedOutput = 0.0;
     }

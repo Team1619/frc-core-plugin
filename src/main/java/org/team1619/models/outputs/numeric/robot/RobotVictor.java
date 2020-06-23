@@ -4,8 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import org.team1619.models.outputs.numeric.Victor;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.utilities.Config;
 
@@ -17,21 +19,14 @@ import javax.annotation.Nullable;
 
 public class RobotVictor extends Victor {
 
-    private final ObjectsDirectory fSharedObjectsDirectory;
+    private final HardwareFactory fHardwareFactory;
     private final VictorSPX fMotor;
 
-    public RobotVictor(Object name, Config config, ObjectsDirectory objectsDirectory) {
+    public RobotVictor(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
-        fSharedObjectsDirectory = objectsDirectory;
-        // Only create one WPILib VictorSPX class per physical victor (device number). Otherwise, the physical victor gets confused getting instructions from multiple VictorSPX classes
-        @Nullable
-        Object motorObject = fSharedObjectsDirectory.getHardwareObject(fDeviceNumber);
-        if (motorObject == null) {
-            fMotor = new VictorSPX(fDeviceNumber);
-            fSharedObjectsDirectory.setHardwareObject(fDeviceNumber, fMotor);
-        } else {
-            fMotor = (VictorSPX) motorObject;
-        }
+        fHardwareFactory = hardwareFactory;
+
+        fMotor = fHardwareFactory.get(VictorSPX.class, fDeviceNumber);
 
         fMotor.setInverted(fIsInverted);
         fMotor.setNeutralMode(fIsBrakeModeEnabled ? NeutralMode.Brake : NeutralMode.Coast);
@@ -49,11 +44,7 @@ public class RobotVictor extends Victor {
                 fMotor.set(ControlMode.PercentOutput, outputValue);
                 break;
             case "follower":
-                @Nullable
-                Object followerMotor = fSharedObjectsDirectory.getHardwareObject((int) outputValue);
-                if (followerMotor != null) {
-                    fMotor.follow((IMotorController) followerMotor, FollowerType.PercentOutput);
-                }
+                fMotor.follow(fHardwareFactory.get(TalonSRX.class, (int) outputValue), FollowerType.PercentOutput);
                 break;
             default:
                 throw new RuntimeException("No output type " + outputType + " for VictorSPX");

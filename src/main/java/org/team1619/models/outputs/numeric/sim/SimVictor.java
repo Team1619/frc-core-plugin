@@ -1,6 +1,7 @@
 package org.team1619.models.outputs.numeric.sim;
 
 import org.team1619.models.outputs.numeric.Victor;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.utilities.Config;
 
@@ -12,19 +13,15 @@ import javax.annotation.Nullable;
 
 public class SimVictor extends Victor {
 
-    @Nullable
-    private Integer mMotor;
+    private final Integer fMotor;
+
     private double mOutput = 0.0;
 
-    public SimVictor(Object name, Config config, ObjectsDirectory objectsDirectory) {
+    public SimVictor(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
 
         // Included to mimic RobotTalon for testing
-        mMotor = (Integer) objectsDirectory.getHardwareObject(fDeviceNumber);
-        if (mMotor == null) {
-            mMotor = fDeviceNumber;
-            objectsDirectory.setHardwareObject(fDeviceNumber, mMotor);
-        }
+        fMotor = hardwareFactory.get(Integer.class, fDeviceNumber);
     }
 
     @Override

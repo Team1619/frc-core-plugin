@@ -3,6 +3,7 @@ package org.team1619.models.inputs.vector.robot;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI;
 import org.team1619.models.inputs.vector.Navx;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.logging.LogManager;
 import org.uacr.utilities.logging.Logger;
@@ -26,10 +27,10 @@ public class RobotNavx extends Navx {
     private double mNavxAccelZ;
 
 
-    public RobotNavx(Object name, Config config) {
+    public RobotNavx(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
 
-        fNavx = new AHRS(SPI.Port.kMXP);
+        fNavx = hardwareFactory.get(AHRS.class, SPI.Port.kMXP);
         fNavx.zeroYaw();
 
         mNavxYaw = 0.0;

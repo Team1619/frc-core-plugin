@@ -1,6 +1,7 @@
 package org.team1619.models.outputs.numeric.robot;
 
 import edu.wpi.first.wpilibj.Servo;
+import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
 /**
@@ -11,9 +12,9 @@ public class RobotServo extends org.team1619.models.outputs.numeric.Servo {
 
     private final Servo fServo;
 
-    public RobotServo(Object name, Config config) {
+    public RobotServo(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
-        fServo = new Servo(fChannel);
+        fServo = hardwareFactory.get(Servo.class, fChannel);
     }
 
     @Override
