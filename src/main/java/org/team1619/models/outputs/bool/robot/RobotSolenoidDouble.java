@@ -7,12 +7,12 @@ import org.uacr.utilities.Config;
 
 public class RobotSolenoidDouble extends SolenoidDouble {
 
-    private final edu.wpi.first.wpilibj.DoubleSolenoid fWpiSolenoid;
+    private final DoubleSolenoid fWpiSolenoid;
 
     public RobotSolenoidDouble(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
 
-        fWpiSolenoid = hardwareFactory.get(edu.wpi.first.wpilibj.DoubleSolenoid.class, fDeviceNumberMaster, fDeviceNumberSlave);
+        fWpiSolenoid = hardwareFactory.get(DoubleSolenoid.class, fDeviceNumberMaster, fDeviceNumberSlave);
         fWpiSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 

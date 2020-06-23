@@ -51,6 +51,7 @@ public class MotorGroup extends OutputNumeric {
     public void setHardware(String outputType, double outputValue, String profile) {
         fMaster.setHardware(outputType, outputValue, profile);
 
+        // TODO this causes talons/victors to read from the SharedHardwareFactory every frame
         // Uncomment this to read position, velocity, or current on follower motors
         for (CTREMotor slave : fSlaves) {
             slave.setHardware("follower", fMaster.getDeviceNumber(), "none");
