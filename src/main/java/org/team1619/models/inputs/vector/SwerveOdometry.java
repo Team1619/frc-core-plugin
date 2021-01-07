@@ -12,6 +12,7 @@ import org.uacr.utilities.purepursuit.Vector;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * SwerveOdometryInput is a Inputvector which uses the navx and drive encoders,
@@ -106,7 +107,7 @@ public class SwerveOdometry extends InputVector {
     }
 
     @Override
-    public void processFlag(String flag) {
+    public void processFlags(Set<String> flags) {
 
     }
 }

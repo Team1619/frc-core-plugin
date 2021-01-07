@@ -5,6 +5,7 @@ import org.uacr.utilities.Config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Limelight extends InputVector {
 
@@ -34,8 +35,10 @@ public abstract class Limelight extends InputVector {
     }
 
     @Override
-    public void processFlag(String flag) {
-
+    public void processFlags(Set<String> flags) {
+        if(!flags.isEmpty()){
+            System.out.println(flags);
+        }
     }
 
     public abstract Map<String, Double> getData();

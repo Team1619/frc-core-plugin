@@ -3,6 +3,8 @@ package org.team1619.models.inputs.bool;
 import org.uacr.models.inputs.bool.InputBoolean;
 import org.uacr.utilities.Config;
 
+import java.util.Set;
+
 public abstract class Button extends InputBoolean {
 
     protected final int fPort;
@@ -51,7 +53,7 @@ public abstract class Button extends InputBoolean {
     public abstract boolean isPressed();
 
     @Override
-    public void processFlag(String flag) {
+    public void processFlag(Set<String> flags) {
 
     }
 }
