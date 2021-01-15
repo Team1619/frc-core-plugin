@@ -15,6 +15,7 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
     private final double fMinAbsolutePosition;
     private final double fMaxAbsolutePosition;
     private final double fCountsPerRev;
+    private final double fMaxRotationDistance;
 
     public AbsoluteEncoderTalon(Object name, Config config, YamlConfigParser parser, AbstractModelFactory modelFactory, InputValues inputValues) {
         super(name, config);
@@ -33,16 +34,17 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
         fMinAbsolutePosition = config.getDouble("min_absolute_position", -180);
         fMaxAbsolutePosition = config.getDouble("max_absolute_position", 180);
 
-        if(fMinAbsolutePosition >= fMaxAbsolutePosition) {
+        if (fMinAbsolutePosition >= fMaxAbsolutePosition) {
             throw new RuntimeException("min_absolute_position must be less than max_absolute_position");
         }
 
         fCountsPerRev = fMaxAbsolutePosition - fMinAbsolutePosition;
+        fMaxRotationDistance = fCountsPerRev / 2;
     }
 
     @Override
     public void setHardware(String outputType, double outputValue, String profile) {
-        if("absolute_position".equals(outputType)) {
+        if ("absolute_position".equals(outputType)) {
             double requestedPosition = rangeEncoderPosition(outputValue);
 
             double absolutePosition = fInputValues.getNumeric(fAbsolutePositionInput);
@@ -51,9 +53,15 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
             double rangedRelativePosition = rangeEncoderPosition(relativePosition);
             double relativePositionZero = relativePosition - rangedRelativePosition;
 
-            double delta = relativePosition - absolutePosition;
+            double target = relativePositionZero + absolutePosition;
 
+            if (requestedPosition - absolutePosition > fMaxRotationDistance) {
+                target -= fCountsPerRev;
+            } else if (absolutePosition - requestedPosition > fMaxRotationDistance) {
+                target += fCountsPerRev;
+            }
 
+            fTalon.setHardware("position", target, profile);
         } else {
             fTalon.setHardware(outputType, outputValue, profile);
         }

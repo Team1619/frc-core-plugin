@@ -13,6 +13,7 @@ import org.team1619.models.inputs.vector.sim.SimLimelight;
 import org.team1619.models.inputs.vector.sim.SimNavx;
 import org.team1619.models.outputs.bool.sim.SimSolenoidDouble;
 import org.team1619.models.outputs.bool.sim.SimSolenoidSingle;
+import org.team1619.models.outputs.numeric.AbsoluteEncoderTalon;
 import org.team1619.models.outputs.numeric.MotorGroup;
 import org.team1619.models.outputs.numeric.sim.SimRumble;
 import org.team1619.models.outputs.numeric.sim.SimServo;
@@ -56,6 +57,8 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
                 return new SimVictor(name, config, fSharedHardwareFactory);
             case "motor_group":
                 return new MotorGroup(name, config, parser, this);
+            case "absolute_encoder_talon":
+                return new AbsoluteEncoderTalon(name, config, parser, this, fSharedInputValues);
             case "servo":
                 return new SimServo(name, config);
             case "rumble":
