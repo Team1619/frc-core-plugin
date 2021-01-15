@@ -9,6 +9,7 @@ import org.team1619.models.inputs.numeric.robot.RobotJoystickAxis;
 import org.team1619.models.inputs.vector.Odometry;
 import org.team1619.models.inputs.vector.SwerveOdometry;
 import org.team1619.models.inputs.vector.robot.RobotAcceleration;
+import org.team1619.models.inputs.vector.robot.RobotCanCoder;
 import org.team1619.models.inputs.vector.robot.RobotLimelight;
 import org.team1619.models.inputs.vector.robot.RobotNavx;
 import org.team1619.models.outputs.bool.robot.RobotSolenoidDouble;
@@ -125,6 +126,8 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
                 return new RobotLimelight(name, config);
             case "navx":
                 return new RobotNavx(name, config, fSharedHardwareFactory);
+            case "canccoder":
+                return new RobotCanCoder(name,config,fSharedHardwareFactory);
             default:
                 return super.createInputVector(name, config);
         }
