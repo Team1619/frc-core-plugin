@@ -12,8 +12,8 @@ public abstract class FrcSimRobot extends RobotCore {
 
     @Override
     protected List<Service> createInfoServices() {
-            return List.of(
-            new LoggingService(fInputValues, fOutputValues, fRobotConfiguration, new SimDashboard()),
-            new WebDashboardService(fEventBus, fFms, fInputValues, fOutputValues, fRobotConfiguration));
+        return List.of(
+                new LoggingService(fInputValues, fOutputValues, fRobotConfiguration, new SimDashboard()),
+                new WebDashboardService(fEventBus, fFms, fInputValues, fOutputValues, fRobotConfiguration));
     }
 }
