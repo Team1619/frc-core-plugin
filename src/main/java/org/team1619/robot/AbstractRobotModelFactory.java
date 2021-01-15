@@ -13,6 +13,7 @@ import org.team1619.models.inputs.vector.robot.RobotLimelight;
 import org.team1619.models.inputs.vector.robot.RobotNavx;
 import org.team1619.models.outputs.bool.robot.RobotSolenoidDouble;
 import org.team1619.models.outputs.bool.robot.RobotSolenoidSingle;
+import org.team1619.models.outputs.numeric.AbsoluteEncoderTalon;
 import org.team1619.models.outputs.numeric.MotorGroup;
 import org.team1619.models.outputs.numeric.robot.RobotRumble;
 import org.team1619.models.outputs.numeric.robot.RobotServo;
@@ -55,6 +56,8 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
                 return new RobotVictor(name, config, fSharedHardwareFactory);
             case "motor_group":
                 return new MotorGroup(name, config, parser, this);
+            case "absolute_encoder_talon":
+                return new AbsoluteEncoderTalon(name, config, parser, this, fSharedInputValues);
             case "servo":
                 return new RobotServo(name, config, fSharedHardwareFactory);
             case "rumble":
