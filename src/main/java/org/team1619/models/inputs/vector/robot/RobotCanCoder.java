@@ -32,7 +32,7 @@ public class RobotCanCoder extends Encoder {
 
     @Override
     protected Map<String, Double> readHardware() {
-        double position = canCoder.getPosition() * positionScalar;
+        double position = canCoder.getAbsolutePosition() * positionScalar;
         double velocity = canCoder.getVelocity() * velocityScalar;
         return Map.of("position", position, "velocity", velocity);
     }

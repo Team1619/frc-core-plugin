@@ -126,7 +126,7 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
                 return new RobotLimelight(name, config);
             case "navx":
                 return new RobotNavx(name, config, fSharedHardwareFactory);
-            case "canccoder":
+            case "cancoder":
                 return new RobotCanCoder(name,config,fSharedHardwareFactory);
             default:
                 return super.createInputVector(name, config);
