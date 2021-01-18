@@ -1,7 +1,7 @@
 package org.team1619.models.inputs.vector.robot;
 
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import org.team1619.models.inputs.vector.Encoder;
@@ -14,12 +14,12 @@ import java.util.Map;
 public class RobotCanCoder extends Encoder {
 
     private final CANCoder canCoder;
-    private final CANCoderConfiguration canCoderConfiguration = new CANCoderConfiguration();
-    private final Map<String, Double> canCoderValues = new HashMap<>();
+    private final CANCoderConfiguration canCoderConfiguration;
 
     public RobotCanCoder(Object name, Config config, HardwareFactory hardwareFactory) {
         super(name, config);
         canCoder = hardwareFactory.get(CANCoder.class, deviceNumber);
+        canCoderConfiguration = new CANCoderConfiguration();
     }
 
     @Override
@@ -34,6 +34,8 @@ public class RobotCanCoder extends Encoder {
 
     @Override
     protected Map<String, Double> readHardware() {
+        Map<String, Double> canCoderValues = new HashMap<>();
+
         if(readPosition) {
             canCoderValues.put("position", canCoder.getPosition() * positionScalar);
         }

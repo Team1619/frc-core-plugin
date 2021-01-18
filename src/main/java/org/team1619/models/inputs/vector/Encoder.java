@@ -2,11 +2,15 @@ package org.team1619.models.inputs.vector;
 
 import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.utilities.Config;
+import org.uacr.utilities.logging.LogManager;
+import org.uacr.utilities.logging.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class Encoder extends InputVector {
+
+    private static final Logger LOGGER = LogManager.getLogger(Encoder.class);
 
     protected final Config config;
     protected final int deviceNumber;
@@ -18,7 +22,7 @@ public abstract class Encoder extends InputVector {
     protected final boolean inverted;
     protected final double positionScalar;
     protected final double velocityScalar;
-    protected final int magnetOffset;
+    protected final double magnetOffset;
 
     protected  Map<String, Double> encoderValues;
 
@@ -26,24 +30,20 @@ public abstract class Encoder extends InputVector {
         super (name, config);
         this.config = config;
         deviceNumber = config.getInt("device_number");
-        magnetOffset = config.getInt("magnet_offset");
-        readPosition = config.getBoolean("read_position");
-        readAbsolutePosition = config.getBoolean("read_absolute_position");
-        readVelocity = config.getBoolean("read_velocity");
-        sensorRange360 = config.getBoolean("sensor_range_360");
-        inverted = config.getBoolean("inverted");
-        positionScalar = config.getDouble("position_scalar");
-        velocityScalar = config.getDouble("velocity_scalar");
-        bootToAbsolutePosition = config.getBoolean("boot_to_absolute_position");
-
-
-
+        magnetOffset = config.getDouble("magnet_offset", 0.0);
+        readPosition = config.getBoolean("read_position", false);
+        readAbsolutePosition = config.getBoolean("read_absolute_position", false);
+        readVelocity = config.getBoolean("read_velocity", false);
+        sensorRange360 = config.getBoolean("sensor_range_360", false);
+        inverted = config.getBoolean("inverted", false);
+        positionScalar = config.getDouble("position_scalar", 1.0);
+        velocityScalar = config.getDouble("velocity_scalar", 1.0);
+        bootToAbsolutePosition = config.getBoolean("boot_to_absolute_position", true);
         encoderValues = new HashMap<>();
     }
 
     @Override
     public void initialize() {
-            encoderValues = Map.of("position", 0.0, "velocity", 0.0);
     }
 
     @Override
