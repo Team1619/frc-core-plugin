@@ -47,7 +47,7 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
         if ("absolute_position".equals(outputType)) {
             double requestedPosition = rangeEncoderPosition(outputValue);
 
-            double absolutePosition = fInputValues.getNumeric(fAbsolutePositionInput);
+            double absolutePosition = fInputValues.getVector(fAbsolutePositionInput).getOrDefault("position", 0.0);
 
             double relativePosition = fTalon.getSensorPosition();
             double rangedRelativePosition = rangeEncoderPosition(relativePosition);
@@ -69,7 +69,7 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
 
     @Override
     public void processFlag(String flag) {
-
+        fTalon.processFlag(flag);
     }
 
     private double rangeEncoderPosition(double position) {
