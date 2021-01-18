@@ -6,7 +6,9 @@ import org.team1619.models.inputs.numeric.sim.SimAnalogSensor;
 import org.team1619.models.inputs.numeric.sim.SimAxis;
 import org.team1619.models.inputs.vector.Odometry;
 import org.team1619.models.inputs.vector.SwerveOdometry;
+import org.team1619.models.inputs.vector.robot.RobotCanCoder;
 import org.team1619.models.inputs.vector.sim.SimAcceleration;
+import org.team1619.models.inputs.vector.sim.SimCanCoder;
 import org.team1619.models.inputs.vector.sim.SimLimelight;
 import org.team1619.models.inputs.vector.sim.SimNavx;
 import org.team1619.models.outputs.bool.sim.SimSolenoidDouble;
@@ -123,6 +125,8 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
                 return new SimLimelight(fSharedEventBus, name, config);
             case "navx":
                 return new SimNavx(fSharedEventBus, name, config);
+            case "cancoder":
+                return new SimCanCoder(name, config);
             default:
                 return super.createInputVector(name, config);
         }
