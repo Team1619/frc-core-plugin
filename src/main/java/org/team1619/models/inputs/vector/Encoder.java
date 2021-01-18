@@ -11,6 +11,7 @@ public abstract class Encoder extends InputVector {
     protected final Config config;
     protected final int deviceNumber;
     protected final boolean readPosition;
+    protected final boolean readAbsolutePosition;
     protected final boolean readVelocity;
     protected final boolean bootToAbsolutePosition;
     protected final boolean sensorRange360;
@@ -27,12 +28,15 @@ public abstract class Encoder extends InputVector {
         deviceNumber = config.getInt("device_number");
         magnetOffset = config.getInt("magnet_offset");
         readPosition = config.getBoolean("read_position");
+        readAbsolutePosition = config.getBoolean("read_absolute_position");
         readVelocity = config.getBoolean("read_velocity");
         sensorRange360 = config.getBoolean("sensor_range_360");
         inverted = config.getBoolean("inverted");
         positionScalar = config.getDouble("position_scalar");
         velocityScalar = config.getDouble("velocity_scalar");
         bootToAbsolutePosition = config.getBoolean("boot_to_absolute_position");
+
+
 
         encoderValues = new HashMap<>();
     }
