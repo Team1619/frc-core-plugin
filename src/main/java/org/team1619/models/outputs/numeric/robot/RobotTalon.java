@@ -59,11 +59,12 @@ public class RobotTalon extends Talon {
                     motor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, CAN_TIMEOUT_MILLISECONDS);
                     break;
                 case "cancoder":
-                    motor.configRemoteFeedbackFilter(this.hardwareFactory.get(CANCoder.class, config.getInt("encoder_number")), 0, CAN_TIMEOUT_MILLISECONDS);
-                    motor.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 0, CAN_TIMEOUT_MILLISECONDS);
+                    motor.configRemoteFeedbackFilter(config.getInt("encoder_number"), RemoteSensorSource.CANCoder, 0, CAN_TIMEOUT_MILLISECONDS);
+                    motor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 0, CAN_TIMEOUT_MILLISECONDS);
+                    break;
                 case "remote_talon":
                     motor.configRemoteFeedbackFilter(config.getInt("encoder_number"), RemoteSensorSource.TalonSRX_SelectedSensor, 0, CAN_TIMEOUT_MILLISECONDS);
-                    motor.configSelectedFeedbackSensor(RemoteFeedbackDevice.RemoteSensor0, 0, CAN_TIMEOUT_MILLISECONDS);
+                    motor.configSelectedFeedbackSensor(FeedbackDevice.RemoteSensor0, 0, CAN_TIMEOUT_MILLISECONDS);
                     break;
                 default:
                     throw new RuntimeException("Invalid configuration for Talon feedback device: " + feedbackDevice);

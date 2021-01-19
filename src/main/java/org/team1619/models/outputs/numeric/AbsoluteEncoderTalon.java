@@ -17,6 +17,9 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
     private final double fCountsPerRev;
     private final double fMaxRotationDistance;
 
+    private boolean fIsZeroing;
+    private double fPositionOffset;
+
     public AbsoluteEncoderTalon(Object name, Config config, YamlConfigParser parser, AbstractModelFactory modelFactory, InputValues inputValues) {
         super(name, config);
 
@@ -40,36 +43,52 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
 
         fCountsPerRev = fMaxAbsolutePosition - fMinAbsolutePosition;
         fMaxRotationDistance = fCountsPerRev / 2;
+
+        fIsZeroing = false;
+        fPositionOffset = 0.0;
     }
 
     @Override
     public void setHardware(String outputType, double outputValue, String profile) {
-        if ("absolute_position".equals(outputType)) {
-            double requestedPosition = rangeEncoderPosition(outputValue);
-
-            double absolutePosition = fInputValues.getVector(fAbsolutePositionInput).getOrDefault("position", 0.0);
-
-            double relativePosition = fTalon.getSensorPosition();
-            double rangedRelativePosition = rangeEncoderPosition(relativePosition);
-            double relativePositionZero = relativePosition - rangedRelativePosition;
-
-            double target = relativePositionZero + absolutePosition;
-
-            if (requestedPosition - absolutePosition > fMaxRotationDistance) {
-                target -= fCountsPerRev;
-            } else if (absolutePosition - requestedPosition > fMaxRotationDistance) {
-                target += fCountsPerRev;
+        if(fIsZeroing) {
+            double talonPosition = fTalon.getSensorPosition();
+            if (Math.abs(talonPosition) > 0.1) {
+                fTalon.setHardware("percent", 0.0, "none");
+                fTalon.processFlag("zero");
+            } else {
+                fPositionOffset = talonPosition - fInputValues.getVector(fAbsolutePositionInput).getOrDefault("absolute_position", 0.0);
+                fIsZeroing = false;
             }
-
-            fTalon.setHardware("position", target, profile);
         } else {
-            fTalon.setHardware(outputType, outputValue, profile);
+            if ("absolute_position".equals(outputType)) {
+                double requestedPosition = rangeEncoderPosition(outputValue);
+
+                double relativePosition = fTalon.getSensorPosition();
+                double rangedRelativePosition = rangeEncoderPosition(relativePosition);
+                double relativePositionZeroDistance = relativePosition - rangedRelativePosition;
+
+                double target = rangeEncoderPosition(requestedPosition + fPositionOffset) + relativePositionZeroDistance;
+
+                if (target - relativePosition > fMaxRotationDistance) {
+                    target -= fCountsPerRev;
+                } else if (requestedPosition - target > fMaxRotationDistance) {
+                    target += fCountsPerRev;
+                }
+
+                fTalon.setHardware("position", target, profile);
+            } else {
+                fTalon.setHardware(outputType, outputValue, profile);
+            }
         }
     }
 
     @Override
     public void processFlag(String flag) {
-        fTalon.processFlag(flag);
+        if("zero".equals(flag)) {
+           fIsZeroing = true;
+        } else {
+            fTalon.processFlag(flag);
+        }
     }
 
     private double rangeEncoderPosition(double position) {
