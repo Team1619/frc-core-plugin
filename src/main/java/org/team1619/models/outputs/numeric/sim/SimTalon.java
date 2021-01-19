@@ -6,10 +6,8 @@ import org.uacr.events.sim.SimInputNumericSetEvent;
 import org.uacr.shared.abstractions.EventBus;
 import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.shared.abstractions.InputValues;
-import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.utilities.Config;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,25 +17,20 @@ import java.util.Map;
 
 public class SimTalon extends Talon {
 
-    private final SimInputNumericListener fPositionListener;
-    private final SimInputNumericListener fVelocityListener;
-    private final Map<String, Map<String, Double>> fProfiles;
+    private final SimInputNumericListener positionListener;
+    private final SimInputNumericListener velocityListener;
     private final Integer fMotor;
 
     private double mOutput = 0.0;
-    private String mCurrentProfileName = "none";
 
     public SimTalon(Object name, Config config, HardwareFactory hardwareFactory, EventBus eventBus, InputValues inputValues) {
         super(name, config, inputValues);
 
-        fPositionListener = new SimInputNumericListener(eventBus, fPositionInputName);
-        fVelocityListener = new SimInputNumericListener(eventBus, fVelocityInputName);
+        positionListener = new SimInputNumericListener(eventBus, positionInputName);
+        velocityListener = new SimInputNumericListener(eventBus, velocityInputName);
 
         // Included to mimic RobotTalon for testing
         fMotor = hardwareFactory.get(Integer.class, fDeviceNumber);
-
-        if (!(config.get("profiles", new HashMap<>()) instanceof Map)) throw new RuntimeException();
-        fProfiles = (Map<String, Map<String, Double>>) config.get("profiles", new HashMap<>());
     }
 
     @Override
@@ -50,47 +43,28 @@ public class SimTalon extends Talon {
     @Override
     public void setHardware(String outputType, double outputValue, String profile) {
 
-        if (fReadPosition) {
+        if (readPosition) {
             readEncoderPosition();
         }
-        if (fReadVelocity) {
+        if (readVelocity) {
             readEncoderVelocity();
         }
 
         switch (outputType) {
             case "percent":
-                mOutput = outputValue;
-                break;
             case "follower":
                 mOutput = outputValue;
                 break;
             case "velocity":
-                if (profile.equals("none")) {
-                    throw new RuntimeException("PIDF Profile name must be specified");
-                }
-
-                if (!profile.equals(mCurrentProfileName)) {
-                    if (!fProfiles.containsKey(profile)) {
-                        throw new RuntimeException("PIDF Profile " + profile + " doesn't exist");
-                    }
-
-                    mCurrentProfileName = profile;
-                }
-
-                mOutput = outputValue;
-
-                break;
             case "position":
-                mOutput = outputValue;
-                break;
             case "motion_magic":
+                setProfile(profile);
+
                 mOutput = outputValue;
                 break;
             default:
                 throw new RuntimeException("No output type " + outputType + " for TalonSRX");
-        }
-//		sLogger.trace("{}", outputValue);
-    }
+        }    }
 
     @Override
     public double getMotorCurrent() {
@@ -104,16 +78,32 @@ public class SimTalon extends Talon {
 
     @Override
     public double getSensorPosition() {
-        return fPositionListener.get();
+        return positionListener.get();
     }
 
     @Override
     public double getSensorVelocity() {
-        return fVelocityListener.get();
+        return velocityListener.get();
     }
 
     @Override
     public void zeroSensor() {
-        fPositionListener.onInputNumericSet(new SimInputNumericSetEvent(fPositionInputName, 0));
+        positionListener.onInputNumericSet(new SimInputNumericSetEvent(positionInputName, 0));
+    }
+
+    private void setProfile(String profileName) {
+        if (profileName.equals("none")) {
+            throw new RuntimeException("PIDF Profile name must be specified");
+        }
+
+        if (profileName.equals(currentProfileName)) {
+            return;
+        }
+
+        if (!profiles.containsKey(profileName)) {
+            throw new RuntimeException("PIDF Profile " + profileName + " doesn't exist");
+        }
+
+        currentProfileName = profileName;
     }
 }
