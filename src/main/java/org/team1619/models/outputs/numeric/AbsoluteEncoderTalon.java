@@ -71,7 +71,7 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
 
                 if (target - relativePosition > fMaxRotationDistance) {
                     target -= fCountsPerRev;
-                } else if (requestedPosition - target > fMaxRotationDistance) {
+                } else if (relativePosition - target > fMaxRotationDistance) {
                     target += fCountsPerRev;
                 }
 
