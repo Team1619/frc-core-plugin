@@ -9,6 +9,7 @@ import org.uacr.utilities.logging.Logger;
 import org.uacr.utilities.purepursuit.Pose2d;
 import org.uacr.utilities.purepursuit.Vector;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,82 +23,93 @@ import java.util.Map;
 
 public class SwerveOdometry extends InputVector {
 
-    private static final Logger sLogger = LogManager.getLogger(SwerveOdometry.class);
+    private static final Logger LOGGER = LogManager.getLogger(SwerveOdometry.class);
 
-    protected final Config fConfig;
-    protected final InputValues fSharedInputValues;
-    private final String fNavx;
-    private final List<String> fModuleSpeedInputs;
-    private final List<String> fModuleAngleInputs;
+    protected final Config config;
+    protected final InputValues sharedInputValues;
+    private final String navx;
+    private final List<String> modulePositionInputs;
+    private final List<String> moduleAngleInputs;
 
-    private Map<String, Double> mNavxValues;
-    private double mHeading = 0;
+    private Map<String, Double> navxValues;
+    private List<Double> lastModulePositions;
+    private List<Double> lastModuleAngles;
+    private double heading;
 
-    private Pose2d mCurrentPosition;
+    private Pose2d currentPosition;
 
     public SwerveOdometry(Object name, Config config, InputValues inputValues) {
         super(name, config);
 
-        fConfig = config;
-        fSharedInputValues = inputValues;
-        mNavxValues = new HashMap<>();
+        this.config = config;
+        sharedInputValues = inputValues;
+        navxValues = new HashMap<>();
 
-        fNavx = config.getString("navx");
+        navx = config.getString("navx");
 
-        fModuleSpeedInputs = Lists.of(config.getString("front_right_speed"), config.getString("front_left_speed"),
-                config.getString("back_left_speed"), config.getString("back_right_speed"));
+        modulePositionInputs = Lists.of(config.getString("front_right_position"), config.getString("front_left_position"),
+                config.getString("back_left_position"), config.getString("back_right_position"));
 
-        fModuleAngleInputs = Lists.of(config.getString("front_right_angle"), config.getString("front_left_angle"),
+        moduleAngleInputs = Lists.of(config.getString("front_right_angle"), config.getString("front_left_angle"),
                 config.getString("back_left_angle"), config.getString("back_right_angle"));
 
-        mCurrentPosition = new Pose2d();
+        lastModulePositions = new ArrayList<>();
+        lastModulePositions.addAll(List.of(0.0, 0.0, 0.0, 0.0));
+        lastModuleAngles = new ArrayList<>();
+        lastModuleAngles.addAll(List.of(0.0, 0.0, 0.0, 0.0));
+
+        currentPosition = new Pose2d();
+        heading = 0;
     }
 
     @Override
     public void initialize() {
-
+        getModuleVector(0);
+        getModuleVector(1);
+        getModuleVector(2);
+        getModuleVector(3);
     }
 
     @Override
     public void update() {
-        if (!fSharedInputValues.getBoolean("ipb_swerve_odometry_has_been_zeroed")) {
+        if (!sharedInputValues.getBoolean("ipb_swerve_odometry_has_been_zeroed")) {
             zeroPosition();
-            fSharedInputValues.setBoolean("ipb_swerve_odometry_has_been_zeroed", true);
-            sLogger.debug("Odometry Input -> Zeroed");
+            sharedInputValues.setBoolean("ipb_swerve_odometry_has_been_zeroed", true);
+            LOGGER.debug("Odometry Input -> Zeroed");
             return;
         }
 
-        mHeading = getHeading();
+        heading = getHeading();
 
-        mCurrentPosition = new Pose2d(mCurrentPosition.add(new Vector(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3))).scale(0.1).rotate(-mHeading)), mHeading);
+        currentPosition = new Pose2d(currentPosition.add(new Vector(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3))).scale(0.25).rotate(heading)), heading);
     }
 
     public void zeroPosition() {
-        mCurrentPosition = new Pose2d();
+        currentPosition = new Pose2d();
     }
 
     public Vector getModuleVector(int module) {
-        return new Vector(getModuleSpeed(module), getModuleAngle(module));
+        return new Vector(getModuleDistance(module), getModuleAngle(module));
     }
 
-    public double getModuleSpeed(int module) {
-        return fSharedInputValues.getNumeric(fModuleSpeedInputs.get(module));
+    public double getModuleDistance(int module) {
+        double position = sharedInputValues.getNumeric(modulePositionInputs.get(module));
+        return position - lastModulePositions.set(module, position);
     }
 
     public double getModuleAngle(int module) {
-        return fSharedInputValues.getNumeric(fModuleAngleInputs.get(module));
+        double angle = sharedInputValues.getVector(moduleAngleInputs.get(module)).getOrDefault("absolute_position", 0.0);
+        return (angle + lastModuleAngles.set(module, angle)) / 2;
     }
 
     @Override
     public Map<String, Double> get() {
-        return Map.of("x", mCurrentPosition.getX(), "y", mCurrentPosition.getY(), "heading", mCurrentPosition.getHeading());
+        return Map.of("x", currentPosition.getX(), "y", currentPosition.getY(), "heading", currentPosition.getHeading());
     }
 
     private double getHeading() {
-        mNavxValues = fSharedInputValues.getVector(fNavx);
-        double heading = mNavxValues.getOrDefault("angle", 0.0);
-
-        if (heading > 180) heading = -(360 - heading);
+        navxValues = sharedInputValues.getVector(navx);
+        double heading = navxValues.getOrDefault("angle", 0.0);
 
         //Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
         heading = -heading;
@@ -107,6 +119,8 @@ public class SwerveOdometry extends InputVector {
 
     @Override
     public void processFlag(String flag) {
-
+        if("zero".equals(flag)) {
+            currentPosition = new Pose2d();
+        }
     }
 }
