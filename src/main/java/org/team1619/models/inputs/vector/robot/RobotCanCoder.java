@@ -25,8 +25,8 @@ public class RobotCanCoder extends Encoder {
     @Override
     public void initialize() {
         canCoderConfiguration.unitString = "degrees";
-        canCoderConfiguration.initializationStrategy = (bootToAbsolutePosition) ? SensorInitializationStrategy.BootToAbsolutePosition : SensorInitializationStrategy.BootToZero;
-        canCoderConfiguration.absoluteSensorRange = (sensorRange360) ? AbsoluteSensorRange.Unsigned_0_to_360 : AbsoluteSensorRange.Signed_PlusMinus180;
+        canCoderConfiguration.initializationStrategy = bootToAbsolutePosition ? SensorInitializationStrategy.BootToAbsolutePosition : SensorInitializationStrategy.BootToZero;
+        canCoderConfiguration.absoluteSensorRange = sensorRange360 ? AbsoluteSensorRange.Unsigned_0_to_360 : AbsoluteSensorRange.Signed_PlusMinus180;
         canCoderConfiguration.sensorDirection = inverted;
         canCoderConfiguration.magnetOffsetDegrees = magnetOffset;
         canCoder.configAllSettings(canCoderConfiguration);
