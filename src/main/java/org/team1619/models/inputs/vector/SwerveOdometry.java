@@ -72,13 +72,6 @@ public class SwerveOdometry extends InputVector {
 
     @Override
     public void update() {
-        if (!sharedInputValues.getBoolean("ipb_swerve_odometry_has_been_zeroed")) {
-            zeroPosition();
-            sharedInputValues.setBoolean("ipb_swerve_odometry_has_been_zeroed", true);
-            LOGGER.debug("Odometry Input -> Zeroed");
-            return;
-        }
-
         heading = getHeading();
 
         currentPosition = new Pose2d(currentPosition.add(new Vector(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3))).scale(0.25).rotate(heading)), heading);
@@ -86,6 +79,7 @@ public class SwerveOdometry extends InputVector {
 
     public void zeroPosition() {
         currentPosition = new Pose2d();
+        initialize();
     }
 
     public Vector getModuleVector(int module) {
@@ -119,8 +113,9 @@ public class SwerveOdometry extends InputVector {
 
     @Override
     public void processFlag(String flag) {
-        if("zero".equals(flag)) {
-            currentPosition = new Pose2d();
+        if ("zero".equals(flag)) {
+            zeroPosition();
+            LOGGER.debug("Odometry Input -> Zeroed");
         }
     }
 }
