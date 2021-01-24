@@ -64,6 +64,7 @@ public class SwerveOdometry extends InputVector {
 
     @Override
     public void initialize() {
+        // Read all inputs so that the deltas work if the wheels aren't zeroed.
         getModuleVector(0);
         getModuleVector(1);
         getModuleVector(2);
@@ -74,12 +75,13 @@ public class SwerveOdometry extends InputVector {
     public void update() {
         heading = getHeading();
 
-        currentPosition = new Pose2d(currentPosition.add(new Vector(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3))).scale(0.25).rotate(heading)), heading);
-    }
+        // Add all the module motions together then divide by the number of module to get robot oriented motion.
+        // Rotate the robot oriented motion by the robot heading to get the robot motion relative to the field.
+        Vector totalWheelTranslation = new Vector(currentPosition.add(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3))));
+        Vector robotTranslation = totalWheelTranslation.scale(0.25);
+        Vector rotatedRobotTranslation = robotTranslation.rotate(heading);
 
-    public void zeroPosition() {
-        currentPosition = new Pose2d();
-        initialize();
+        currentPosition = new Pose2d(rotatedRobotTranslation, heading);
     }
 
     public Vector getModuleVector(int module) {
@@ -87,11 +89,13 @@ public class SwerveOdometry extends InputVector {
     }
 
     public double getModuleDistance(int module) {
+        // The change in module position over this frame.
         double position = sharedInputValues.getNumeric(modulePositionInputs.get(module));
         return position - lastModulePositions.set(module, position);
     }
 
     public double getModuleAngle(int module) {
+        // The average module angle over the frame, this is the most accurate representation of module angle for the vector of motion.
         double angle = sharedInputValues.getVector(moduleAngleInputs.get(module)).getOrDefault("absolute_position", 0.0);
         return (angle + lastModuleAngles.set(module, angle)) / 2;
     }
@@ -105,10 +109,16 @@ public class SwerveOdometry extends InputVector {
         navxValues = sharedInputValues.getVector(navx);
         double heading = navxValues.getOrDefault("angle", 0.0);
 
-        //Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
+        // Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
         heading = -heading;
 
         return heading;
+    }
+
+    public void zeroPosition() {
+        currentPosition = new Pose2d();
+        // Refresh module positions so that deltas work.
+        initialize();
     }
 
     @Override
