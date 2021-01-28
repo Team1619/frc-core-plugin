@@ -77,11 +77,11 @@ public class SwerveOdometry extends InputVector {
 
         // Add all the module motions together then divide by the number of module to get robot oriented motion.
         // Rotate the robot oriented motion by the robot heading to get the robot motion relative to the field.
-        Vector totalWheelTranslation = new Vector(currentPosition.add(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3))));
+        Vector totalWheelTranslation = new Vector(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3)));
         Vector robotTranslation = totalWheelTranslation.scale(0.25);
         Vector rotatedRobotTranslation = robotTranslation.rotate(heading);
 
-        currentPosition = new Pose2d(rotatedRobotTranslation, heading);
+        currentPosition = new Pose2d(currentPosition.add(rotatedRobotTranslation), heading);
     }
 
     public Vector getModuleVector(int module) {
