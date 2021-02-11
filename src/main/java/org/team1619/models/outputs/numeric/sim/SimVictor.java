@@ -6,6 +6,7 @@ import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.utilities.Config;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 /**
  * SimVictor extends Victor, and acts like victors in sim mode
@@ -25,7 +26,7 @@ public class SimVictor extends Victor {
     }
 
     @Override
-    public void processFlag(String flag) {
+    public void processFlags(Set<String> flags) {
 
     }
 

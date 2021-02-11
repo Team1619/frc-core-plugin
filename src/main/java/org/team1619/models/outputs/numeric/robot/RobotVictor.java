@@ -12,6 +12,7 @@ import org.uacr.shared.abstractions.ObjectsDirectory;
 import org.uacr.utilities.Config;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 /**
  * RobotVictor extends Victor, and controls victor motor controllers on the robot
@@ -33,7 +34,7 @@ public class RobotVictor extends Victor {
     }
 
     @Override
-    public void processFlag(String flag) {
+    public void processFlags(Set<String> flags) {
 
     }
 

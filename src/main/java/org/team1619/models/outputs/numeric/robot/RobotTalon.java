@@ -13,6 +13,7 @@ import org.uacr.utilities.Config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * RobotTalon extends Talon, and controls talon motor controllers on the robot
@@ -73,8 +74,8 @@ public class RobotTalon extends Talon {
     }
 
     @Override
-    public void processFlag(String flag) {
-        if (flag.equals("zero")) {
+    public void processFlags(Set<String> flags) {
+        if (flags.contains("zero")) {
             zeroSensor();
         }
     }

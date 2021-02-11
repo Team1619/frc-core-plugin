@@ -5,6 +5,8 @@ import org.team1619.models.outputs.bool.SolenoidSingle;
 import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
+import java.util.Set;
+
 public class RobotSolenoidSingle extends SolenoidSingle {
 
     private final Solenoid fWpiSolenoid;
@@ -15,13 +17,15 @@ public class RobotSolenoidSingle extends SolenoidSingle {
         fWpiSolenoid = hardwareFactory.get(Solenoid.class, fDeviceNumber);
     }
 
-    @Override
-    public void processFlag(String flag) {
 
-    }
 
     @Override
     public void setHardware(boolean output) {
         fWpiSolenoid.set(output);
+    }
+
+    @Override
+    public void processFlags(Set<String> flag) {
+
     }
 }

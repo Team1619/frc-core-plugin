@@ -3,6 +3,8 @@ package org.team1619.models.outputs.numeric.sim;
 import org.team1619.models.outputs.numeric.Rumble;
 import org.uacr.utilities.Config;
 
+import java.util.Set;
+
 /**
  * SimRumble extends Rumble, and acts like xbox controller rumble motors in sim mode
  */
@@ -22,7 +24,7 @@ public class SimRumble extends Rumble {
     }
 
     @Override
-    public void processFlag(String flag) {
+    public void processFlags(Set<String> flags) {
 
     }
 

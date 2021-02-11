@@ -43,8 +43,9 @@ public class MotorGroup extends OutputNumeric {
     }
 
     @Override
-    public void processFlag(String flag) {
-        fMaster.processFlag(flag);
+    public void processFlags(Set<String> flags) {
+
+        fMaster.processFlags(flags);
     }
 
     @Override

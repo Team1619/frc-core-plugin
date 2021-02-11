@@ -8,6 +8,7 @@ import org.uacr.utilities.Config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 	/* ***** Defintitions  ******
 	tv 	Whether the limelight has any valid targets (0 or 1)
@@ -39,7 +40,7 @@ public class RobotLimelight extends Limelight {
             mTable = NetworkTableInstance.getDefault().getTable("limelight-" + config.getString("host"));
         }
         if (config.contains("pnp")) {
-            processFlag(config.getString("pnp"));
+            processFlags(Set.of(config.getString("pnp")));
         }
     }
 
@@ -65,31 +66,35 @@ public class RobotLimelight extends Limelight {
     }
 
     @Override
-    public void processFlag(String flag) {
-        if (fPipelines.containsKey(flag)) {
-            NetworkTableEntry pipelineEntry = mTable.getEntry("pipeline");
-            pipelineEntry.setNumber(fPipelines.get(flag));
-        } else if (flag.contains("pnp")) {
-            NetworkTableEntry pnpEntry = mTable.getEntry("stream");
-            switch (flag) {
-                case "pnp-standard":
-                    pnpEntry.setNumber(0);
-                    break;
-                case "pnp-main":
-                    pnpEntry.setNumber(1);
-                    break;
-                case "pnp-secondary":
-                    pnpEntry.setNumber(2);
-                    break;
-            }
-        } else if (flag.contains("led")) {
-            switch (flag) {
-                case "led-on":
-                    mTable.getEntry("ledMode").setValue(0);
-                    break;
-                case "led-off":
-                    mTable.getEntry("ledMode").setValue(1);
-                    break;
+    public void processFlags(Set<String> flags) {
+
+        for (String flag : flags) {
+            if (fPipelines.containsKey(flag)) {
+                NetworkTableEntry pipelineEntry = mTable.getEntry("pipeline");
+                pipelineEntry.setNumber(fPipelines.get(flag));
+            } else if (flag.contains("pnp")) {
+                NetworkTableEntry pnpEntry = mTable.getEntry("stream");
+
+                switch (flag) {
+                    case "pnp-standard":
+                        pnpEntry.setNumber(0);
+                        break;
+                    case "pnp-main":
+                        pnpEntry.setNumber(1);
+                        break;
+                    case "pnp-secondary":
+                        pnpEntry.setNumber(2);
+                        break;
+                }
+            } else if (flag.contains("led")) {
+                switch (flag) {
+                    case "led-on":
+                        mTable.getEntry("ledMode").setValue(0);
+                        break;
+                    case "led-off":
+                        mTable.getEntry("ledMode").setValue(1);
+                        break;
+                }
             }
         }
     }

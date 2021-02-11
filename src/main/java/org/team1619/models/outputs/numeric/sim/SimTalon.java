@@ -10,6 +10,7 @@ import org.uacr.utilities.Config;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * SimTalon extends Talon, and acts like talons in sim mode
@@ -34,8 +35,8 @@ public class SimTalon extends Talon {
     }
 
     @Override
-    public void processFlag(String flag) {
-        if (flag.equals("zero")) {
+    public void processFlags(Set<String> flags) {
+        if (flags.contains("zero")) {
             zeroSensor();
         }
     }

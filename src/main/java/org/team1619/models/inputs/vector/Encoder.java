@@ -7,6 +7,7 @@ import org.uacr.utilities.logging.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Encoder extends InputVector {
 
@@ -57,8 +58,8 @@ public abstract class Encoder extends InputVector {
     }
 
     @Override
-    public void processFlag(String flag) {
-        if (flag.equals("zero")) {
+    public void processFlags(Set<String> flags) {
+        if (flags.contains("zero")) {
             zeroEncoder();
         }
     }

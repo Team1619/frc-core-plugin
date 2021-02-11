@@ -7,6 +7,8 @@ import org.uacr.shared.abstractions.InputValues;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.YamlConfigParser;
 
+import java.util.Set;
+
 public class AbsoluteEncoderTalon extends OutputNumeric {
 
     private final InputValues fInputValues;
@@ -54,7 +56,7 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
             double talonPosition = fTalon.getSensorPosition();
             if (Math.abs(talonPosition) > 0.1) {
                 fTalon.setHardware("percent", 0.0, "none");
-                fTalon.processFlag("zero");
+               // fTalon.processFlags("zero");
             } else {
                 fPositionOffset = talonPosition - fInputValues.getVector(fAbsolutePositionInput).getOrDefault("absolute_position", 0.0);
                 fIsZeroing = false;
@@ -83,11 +85,11 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
     }
 
     @Override
-    public void processFlag(String flag) {
-        if("zero".equals(flag)) {
+    public void processFlags(Set<String> flags) {
+        if(flags.contains("zero")) {
            fIsZeroing = true;
         } else {
-            fTalon.processFlag(flag);
+            fTalon.processFlags(flags);
         }
     }
 

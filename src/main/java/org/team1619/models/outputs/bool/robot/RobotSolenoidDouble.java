@@ -5,6 +5,8 @@ import org.team1619.models.outputs.bool.SolenoidDouble;
 import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
+import java.util.Set;
+
 public class RobotSolenoidDouble extends SolenoidDouble {
 
     private final DoubleSolenoid fWpiSolenoid;
@@ -16,10 +18,7 @@ public class RobotSolenoidDouble extends SolenoidDouble {
         fWpiSolenoid.set(DoubleSolenoid.Value.kOff);
     }
 
-    @Override
-    public void processFlag(String flag) {
 
-    }
 
     @Override
     public void setHardware(boolean output) {
@@ -28,5 +27,10 @@ public class RobotSolenoidDouble extends SolenoidDouble {
         } else {
             fWpiSolenoid.set(DoubleSolenoid.Value.kReverse);
         }
+    }
+
+    @Override
+    public void processFlags(Set<String> flag) {
+
     }
 }
