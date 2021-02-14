@@ -5,8 +5,6 @@ import org.team1619.models.outputs.bool.SolenoidDouble;
 import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
-import java.util.Set;
-
 public class RobotSolenoidDouble extends SolenoidDouble {
 
     private final DoubleSolenoid fWpiSolenoid;
@@ -30,7 +28,7 @@ public class RobotSolenoidDouble extends SolenoidDouble {
     }
 
     @Override
-    public void processFlags(Set<String> flag) {
+    public void processFlag(String flag) {
 
     }
 }
