@@ -5,7 +5,6 @@ import org.uacr.utilities.Config;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class Navx extends InputVector {
 
@@ -55,8 +54,8 @@ public abstract class Navx extends InputVector {
         return mNavxValues;
     }
 
-    public void processFlag(Set<String> flags) {
-        if (flags.equals("zero")) {
+    public void processFlag(String flag) {
+        if (flag.equals("zero")) {
             zeroYaw();
         }
     }

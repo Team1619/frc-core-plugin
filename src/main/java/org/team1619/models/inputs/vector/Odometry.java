@@ -10,7 +10,6 @@ import org.uacr.utilities.purepursuit.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * OdometryInput is a Inputvector which uses the navx and drive encoders,
@@ -111,7 +110,7 @@ public class Odometry extends InputVector {
     }
 
     @Override
-    public void processFlag(Set<String> flags) {
+    public void processFlag(String flag) {
 
     }
 }

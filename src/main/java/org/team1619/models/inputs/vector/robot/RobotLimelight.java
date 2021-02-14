@@ -40,7 +40,7 @@ public class RobotLimelight extends Limelight {
             mTable = NetworkTableInstance.getDefault().getTable("limelight-" + config.getString("host"));
         }
         if (config.contains("pnp")) {
-            processFlag(Set.of(config.getString("pnp")));
+            processFlag(config.getString("pnp"));
         }
     }
 
@@ -66,38 +66,37 @@ public class RobotLimelight extends Limelight {
     }
 
     @Override
-    public void processFlag(Set<String> flags) {
+    public void processFlag(String flag) {
 
-        for (String flag : flags) {
-            if (fPipelines.containsKey(flag)) {
-                NetworkTableEntry pipelineEntry = mTable.getEntry("pipeline");
-                pipelineEntry.setNumber(fPipelines.get(flag));
-            } else if (flag.contains("pnp")) {
-                NetworkTableEntry pnpEntry = mTable.getEntry("stream");
+        if (fPipelines.containsKey(flag)) {
+            NetworkTableEntry pipelineEntry = mTable.getEntry("pipeline");
+            pipelineEntry.setNumber(fPipelines.get(flag));
+        } else if (flag.contains("pnp")) {
+            NetworkTableEntry pnpEntry = mTable.getEntry("stream");
 
-                switch (flag) {
-                    case "pnp-standard":
-                        pnpEntry.setNumber(0);
-                        break;
-                    case "pnp-main":
-                        pnpEntry.setNumber(1);
-                        break;
-                    case "pnp-secondary":
-                        pnpEntry.setNumber(2);
-                        break;
-                }
-            } else if (flag.contains("led")) {
-                switch (flag) {
-                    case "led-on":
-                        mTable.getEntry("ledMode").setValue(0);
-                        break;
-                    case "led-off":
-                        mTable.getEntry("ledMode").setValue(1);
-                        break;
-                }
+            switch (flag) {
+                case "pnp-standard":
+                    pnpEntry.setNumber(0);
+                    break;
+                case "pnp-main":
+                    pnpEntry.setNumber(1);
+                    break;
+                case "pnp-secondary":
+                    pnpEntry.setNumber(2);
+                    break;
+            }
+        } else if (flag.contains("led")) {
+            switch (flag) {
+                case "led-on":
+                    mTable.getEntry("ledMode").setValue(0);
+                    break;
+                case "led-off":
+                    mTable.getEntry("ledMode").setValue(1);
+                    break;
             }
         }
     }
+
 
     @Override
     public void initialize() {

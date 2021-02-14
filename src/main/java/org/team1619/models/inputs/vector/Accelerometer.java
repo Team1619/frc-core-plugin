@@ -5,7 +5,6 @@ import org.uacr.utilities.Config;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public abstract class Accelerometer extends InputVector {
 
@@ -31,7 +30,7 @@ public abstract class Accelerometer extends InputVector {
     }
 
     @Override
-    public void processFlag(Set<String> flags) {
+    public void processFlag(String flag) {
 
     }
 
