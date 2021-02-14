@@ -3,8 +3,6 @@ package org.team1619.models.inputs.bool;
 import org.uacr.models.inputs.bool.InputBoolean;
 import org.uacr.utilities.Config;
 
-import java.util.Set;
-
 public abstract class DigitalSensor extends InputBoolean {
 
     protected final int fId;
@@ -48,7 +46,7 @@ public abstract class DigitalSensor extends InputBoolean {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(String flag) {
 
     }
 }

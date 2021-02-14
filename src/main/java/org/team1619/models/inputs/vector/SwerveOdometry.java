@@ -107,7 +107,7 @@ public class SwerveOdometry extends InputVector {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(Set<String> flags) {
 
     }
 }

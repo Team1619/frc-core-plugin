@@ -40,7 +40,7 @@ public class RobotLimelight extends Limelight {
             mTable = NetworkTableInstance.getDefault().getTable("limelight-" + config.getString("host"));
         }
         if (config.contains("pnp")) {
-            processFlags(Set.of(config.getString("pnp")));
+            processFlag(Set.of(config.getString("pnp")));
         }
     }
 
@@ -66,7 +66,7 @@ public class RobotLimelight extends Limelight {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(Set<String> flags) {
 
         for (String flag : flags) {
             if (fPipelines.containsKey(flag)) {

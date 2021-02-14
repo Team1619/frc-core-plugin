@@ -55,7 +55,7 @@ public abstract class Navx extends InputVector {
         return mNavxValues;
     }
 
-    public void processFlags(Set<String> flags) {
+    public void processFlag(Set<String> flags) {
         if (flags.equals("zero")) {
             zeroYaw();
         }

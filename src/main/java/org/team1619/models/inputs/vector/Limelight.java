@@ -35,7 +35,7 @@ public abstract class Limelight extends InputVector {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(Set<String> flags) {
         if(!flags.isEmpty()){
             System.out.println(flags);
         }

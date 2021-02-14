@@ -31,7 +31,7 @@ public abstract class Accelerometer extends InputVector {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(Set<String> flags) {
 
     }
 

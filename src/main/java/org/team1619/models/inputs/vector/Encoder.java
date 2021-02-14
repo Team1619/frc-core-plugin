@@ -58,7 +58,7 @@ public abstract class Encoder extends InputVector {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(Set<String> flags) {
         if (flags.contains("zero")) {
             zeroEncoder();
         }

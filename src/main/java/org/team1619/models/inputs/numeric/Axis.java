@@ -3,8 +3,6 @@ package org.team1619.models.inputs.numeric;
 import org.uacr.models.inputs.numeric.InputNumeric;
 import org.uacr.utilities.Config;
 
-import java.util.Set;
-
 public abstract class Axis extends InputNumeric {
 
     protected final int fPort;
@@ -54,7 +52,7 @@ public abstract class Axis extends InputNumeric {
     protected abstract double getAxis();
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(String flags) {
 
     }
 }

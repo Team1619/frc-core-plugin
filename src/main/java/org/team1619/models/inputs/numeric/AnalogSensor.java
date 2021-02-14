@@ -5,8 +5,6 @@ import org.uacr.utilities.Config;
 import org.uacr.utilities.logging.LogManager;
 import org.uacr.utilities.logging.Logger;
 
-import java.util.Set;
-
 public abstract class AnalogSensor extends InputNumeric {
 
     private static final Logger sLogger = LogManager.getLogger(AnalogSensor.class);
@@ -53,7 +51,7 @@ public abstract class AnalogSensor extends InputNumeric {
     protected abstract double getValue();
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(String flags) {
 
     }
 }
