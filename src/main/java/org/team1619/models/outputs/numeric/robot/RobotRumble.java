@@ -6,8 +6,6 @@ import org.team1619.models.outputs.numeric.Rumble;
 import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
-import java.util.Set;
-
 /**
  * RobotRumble extends Rumble, and controls xbox controller rumble motors when running on the robot
  */
@@ -27,7 +25,7 @@ public class RobotRumble extends Rumble {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(String flag) {
 
     }
 

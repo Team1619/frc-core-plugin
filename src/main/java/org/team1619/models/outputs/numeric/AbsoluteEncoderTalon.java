@@ -7,8 +7,6 @@ import org.uacr.shared.abstractions.InputValues;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.YamlConfigParser;
 
-import java.util.Set;
-
 public class AbsoluteEncoderTalon extends OutputNumeric {
 
     private final InputValues fInputValues;
@@ -85,11 +83,11 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
-        if(flags.contains("zero")) {
+    public void processFlag(String flag) {
+        if(flag.equals("zero")) {
            fIsZeroing = true;
         } else {
-            fTalon.processFlags(flags);
+            fTalon.processFlag(flag);
         }
     }
 

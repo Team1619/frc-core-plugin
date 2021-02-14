@@ -4,16 +4,11 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.BaseTalon;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import org.team1619.models.outputs.numeric.Talon;
 import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.shared.abstractions.InputValues;
 import org.uacr.utilities.Config;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * RobotTalon extends Talon, and controls talon motor controllers on the robot
@@ -74,8 +69,8 @@ public class RobotTalon extends Talon {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
-        if (flags.contains("zero")) {
+    public void processFlag(String flag) {
+        if (flag.equals("zero")) {
             zeroSensor();
         }
     }

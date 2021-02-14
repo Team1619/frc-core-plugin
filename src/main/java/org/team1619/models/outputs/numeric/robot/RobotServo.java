@@ -4,8 +4,6 @@ import edu.wpi.first.wpilibj.Servo;
 import org.uacr.shared.abstractions.HardwareFactory;
 import org.uacr.utilities.Config;
 
-import java.util.Set;
-
 /**
  * RobotServo extends Servo, and controls servo motors on the robot
  */
@@ -20,7 +18,7 @@ public class RobotServo extends org.team1619.models.outputs.numeric.Servo {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(String flag) {
 
     }
 

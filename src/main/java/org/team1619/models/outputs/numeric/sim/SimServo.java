@@ -2,8 +2,6 @@ package org.team1619.models.outputs.numeric.sim;
 
 import org.uacr.utilities.Config;
 
-import java.util.Set;
-
 /**
  * SimServo extends Servo, and acts like servo motors in sim mode
  */
@@ -17,7 +15,7 @@ public class SimServo extends org.team1619.models.outputs.numeric.Servo {
     }
 
     @Override
-    public void processFlags(Set<String> flags) {
+    public void processFlag(String flag) {
 
     }
 
