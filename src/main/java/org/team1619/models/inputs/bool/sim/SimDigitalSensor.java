@@ -4,8 +4,6 @@ import org.team1619.models.inputs.bool.DigitalSensor;
 import org.uacr.shared.abstractions.EventBus;
 import org.uacr.utilities.Config;
 
-import java.util.Set;
-
 public class SimDigitalSensor extends DigitalSensor {
 
     private final SimInputBooleanListener fListener;
