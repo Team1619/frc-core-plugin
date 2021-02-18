@@ -54,7 +54,7 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
             double talonPosition = fTalon.getSensorPosition();
             if (Math.abs(talonPosition) > 0.1) {
                 fTalon.setHardware("percent", 0.0, "none");
-               // fTalon.processFlags("zero");
+                fTalon.processFlag("zero");
             } else {
                 fPositionOffset = talonPosition - fInputValues.getVector(fAbsolutePositionInput).getOrDefault("absolute_position", 0.0);
                 fIsZeroing = false;
