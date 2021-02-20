@@ -5,6 +5,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import org.team1619.models.inputs.vector.Limelight;
 import org.uacr.utilities.Config;
+import org.uacr.utilities.logging.LogManager;
+import org.uacr.utilities.logging.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,6 +29,8 @@ import java.util.Map;
 
 public class RobotLimelight extends Limelight {
 
+    Logger LOGGER = LogManager.getLogger(RobotLimelight.class);
+
     private NetworkTable mTable;
     private double mAngleConversion;
 
@@ -41,7 +45,7 @@ public class RobotLimelight extends Limelight {
             mTable = NetworkTableInstance.getDefault().getTable("limelight-" + config.getString("host"));
         }
 
-        String pipeline = config.getString("pipeline", "");
+        String pipeline = config.getString("initial_pipeline", "");
         if(!pipeline.isEmpty()) {
             processFlag(pipeline);
         }
@@ -77,6 +81,7 @@ public class RobotLimelight extends Limelight {
         if (fPipelines.containsKey(flag)) {
             NetworkTableEntry pipelineEntry = mTable.getEntry("pipeline");
             pipelineEntry.setNumber(fPipelines.get(flag));
+            LOGGER.info("Pipeline value: {}", pipelineEntry.getNumber(-10000));
         } else if (flag.contains("pnp")) {
             NetworkTableEntry pnpEntry = mTable.getEntry("stream");
             switch (flag) {
