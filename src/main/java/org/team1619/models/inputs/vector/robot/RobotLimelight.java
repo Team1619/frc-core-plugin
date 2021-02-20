@@ -29,8 +29,6 @@ import java.util.Map;
 
 public class RobotLimelight extends Limelight {
 
-    Logger LOGGER = LogManager.getLogger(RobotLimelight.class);
-
     private NetworkTable mTable;
     private double mAngleConversion;
 
@@ -81,7 +79,6 @@ public class RobotLimelight extends Limelight {
         if (fPipelines.containsKey(flag)) {
             NetworkTableEntry pipelineEntry = mTable.getEntry("pipeline");
             pipelineEntry.setNumber(fPipelines.get(flag));
-            LOGGER.info("Pipeline value: {}", pipelineEntry.getNumber(-10000));
         } else if (flag.contains("pnp")) {
             NetworkTableEntry pnpEntry = mTable.getEntry("stream");
             switch (flag) {
