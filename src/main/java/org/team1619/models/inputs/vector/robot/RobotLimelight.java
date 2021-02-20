@@ -5,8 +5,6 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import org.team1619.models.inputs.vector.Limelight;
 import org.uacr.utilities.Config;
-import org.uacr.utilities.logging.LogManager;
-import org.uacr.utilities.logging.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
