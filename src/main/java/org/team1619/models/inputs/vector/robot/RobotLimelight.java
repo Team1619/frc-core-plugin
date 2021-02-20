@@ -32,12 +32,20 @@ public class RobotLimelight extends Limelight {
 
     public RobotLimelight(Object name, Config config) {
         super(name, config);
+
         mAngleConversion = config.getBoolean("degrees", false) ? 1.0 : (Math.PI / 180.0);
+
         if (config.getString("host").isBlank()) {
             mTable = NetworkTableInstance.getDefault().getTable("limelight");
         } else {
             mTable = NetworkTableInstance.getDefault().getTable("limelight-" + config.getString("host"));
         }
+
+        String pipeline = config.getString("pipeline", "");
+        if(!pipeline.isEmpty()) {
+            processFlag(pipeline);
+        }
+
         if (config.contains("pnp")) {
             processFlag(config.getString("pnp"));
         }
