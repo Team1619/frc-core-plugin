@@ -7,10 +7,7 @@ import org.team1619.models.inputs.numeric.sim.SimAxis;
 import org.team1619.models.inputs.vector.Odometry;
 import org.team1619.models.inputs.vector.SwerveOdometry;
 import org.team1619.models.inputs.vector.robot.RobotCanCoder;
-import org.team1619.models.inputs.vector.sim.SimAcceleration;
-import org.team1619.models.inputs.vector.sim.SimCanCoder;
-import org.team1619.models.inputs.vector.sim.SimLimelight;
-import org.team1619.models.inputs.vector.sim.SimNavx;
+import org.team1619.models.inputs.vector.sim.*;
 import org.team1619.models.outputs.bool.sim.SimSolenoidDouble;
 import org.team1619.models.outputs.bool.sim.SimSolenoidSingle;
 import org.team1619.models.outputs.numeric.AbsoluteEncoderTalon;
@@ -126,6 +123,8 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
                 return new SwerveOdometry(name, config, fSharedInputValues);
             case "limelight":
                 return new SimLimelight(fSharedEventBus, name, config);
+            case "networktable_reader":
+                return new SimNetworkTableReader(name, config);
             case "navx":
                 return new SimNavx(fSharedEventBus, name, config);
             case "cancoder":
