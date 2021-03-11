@@ -20,6 +20,7 @@ public class RobotNetworkTableReader extends NetworkTableReader {
         super(name, config);
 
         networkTable = NetworkTableInstance.getDefault().getTable(config.getString("host"));
+
     }
 
     @Override
