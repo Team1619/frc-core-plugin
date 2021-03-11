@@ -4,7 +4,9 @@ import org.team1619.models.inputs.bool.sim.SimControllerButton;
 import org.team1619.models.inputs.bool.sim.SimDigitalSensor;
 import org.team1619.models.inputs.numeric.sim.SimAnalogSensor;
 import org.team1619.models.inputs.numeric.sim.SimAxis;
+import org.team1619.models.inputs.vector.NetworkTableOdometry;
 import org.team1619.models.inputs.vector.Odometry;
+import org.team1619.models.inputs.vector.OdometryFuser;
 import org.team1619.models.inputs.vector.SwerveOdometry;
 import org.team1619.models.inputs.vector.robot.RobotCanCoder;
 import org.team1619.models.inputs.vector.sim.*;
@@ -123,8 +125,12 @@ public class AbstractSimModelFactory extends AbstractModelFactory {
                 return new SwerveOdometry(name, config, fSharedInputValues);
             case "limelight":
                 return new SimLimelight(fSharedEventBus, name, config);
-            case "networktable_reader":
+            case "network_table_reader":
                 return new SimNetworkTableReader(name, config);
+            case "network_table_odometry":
+                return new NetworkTableOdometry(name, config, fSharedInputValues);
+            case "odometry_fuser":
+                return new OdometryFuser(name, config, fSharedInputValues);
             case "navx":
                 return new SimNavx(fSharedEventBus, name, config);
             case "cancoder":

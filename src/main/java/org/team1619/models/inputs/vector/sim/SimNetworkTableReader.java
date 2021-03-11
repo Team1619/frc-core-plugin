@@ -20,7 +20,7 @@ public class SimNetworkTableReader extends NetworkTableReader {
     public Map<String, Double> getData() {
         Map<String, Double> data = new HashMap<>();
 
-        values.keySet().stream().forEach(value -> data.put(value, 0.0));
+        values.entrySet().stream().forEach(value -> data.put(value.getValue(), 0.0));
 
         return data;
     }
