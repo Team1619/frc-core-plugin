@@ -3,6 +3,7 @@ package org.team1619.models.inputs.vector;
 import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.shared.abstractions.InputValues;
 import org.uacr.utilities.Config;
+import org.uacr.utilities.purepursuit.Point;
 import org.uacr.utilities.purepursuit.Pose2d;
 import org.uacr.utilities.purepursuit.Vector;
 
@@ -55,16 +56,16 @@ public class OdometryFuser extends InputVector {
         Map<String, Double> relativeOdometryValues = inputValues.getVector(relativeOdometryInput);
         Map<String, Double> absoluteOdometryValues = inputValues.getVector(absoluteOdometryInput);
 
-        Vector relativeOdometryPosition = new Vector(relativeOdometryValues.get("dx"), relativeOdometryValues.get("dy"));
-        Vector relativeOdometryDelta = new Vector(relativeOdometryValues.get("dx"), relativeOdometryValues.get("dy"));
+        Vector relativeOdometryPosition = new Vector(new Point(relativeOdometryValues.get("x"), relativeOdometryValues.get("y")));
+        Vector relativeOdometryDelta = new Vector(new Point(relativeOdometryValues.get("dx"), relativeOdometryValues.get("dy")));
 
         movementBuffer.put(currentTime, relativeOdometryDelta);
 
         movementBuffer.keySet().removeIf(t -> t < currentTime - absoluteOdometryDelay);
 
-        if(absoluteOdometryValues.getOrDefault("tv", 0.0) == 1.0) {
+        if(absoluteOdometryValues.getOrDefault("valid", 0.0) == 1.0) {
 
-            Vector absoluteOdometryPosition = new Vector(absoluteOdometryValues.get("x"), absoluteOdometryValues.get("y"));
+            Vector absoluteOdometryPosition = new Vector(new Point(absoluteOdometryValues.get("x"), absoluteOdometryValues.get("y")));
 
             if(!absoluteOdometryPosition.equals(lastAbsoluteOdometryPosition)) {
                 movementBuffer.values().stream().reduce((t, v) -> new Vector(t.add(v))).ifPresent(t -> {
@@ -84,6 +85,8 @@ public class OdometryFuser extends InputVector {
 
     @Override
     public void processFlag(String flag) {
-
+        if("zero".equals(flag)) {
+            lastAbsoluteOdometryPosition = new Vector(Integer.MAX_VALUE, 0);
+        }
     }
 }
