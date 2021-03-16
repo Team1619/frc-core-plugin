@@ -69,7 +69,7 @@ public class OdometryFuser extends InputVector {
 
             if(!absoluteOdometryPosition.equals(lastAbsoluteOdometryPosition)) {
                 movementBuffer.values().stream().reduce((t, v) -> new Vector(t.add(v))).ifPresent(t -> {
-                    relativeOdometryOffset = new Vector(absoluteOdometryPosition.subtract(relativeOdometryPosition));
+                    relativeOdometryOffset = new Vector(absoluteOdometryPosition.add(t).subtract(relativeOdometryPosition));
                 });
                 lastAbsoluteOdometryPosition = absoluteOdometryPosition;
             }
