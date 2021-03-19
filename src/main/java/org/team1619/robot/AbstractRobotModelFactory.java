@@ -6,12 +6,12 @@ import org.team1619.models.inputs.bool.robot.RobotJoystickButton;
 import org.team1619.models.inputs.numeric.robot.RobotAnalogSensor;
 import org.team1619.models.inputs.numeric.robot.RobotControllerAxis;
 import org.team1619.models.inputs.numeric.robot.RobotJoystickAxis;
+import org.team1619.models.inputs.vector.NetworkTableOdometry;
 import org.team1619.models.inputs.vector.Odometry;
+import org.team1619.models.inputs.vector.OdometryFuser;
 import org.team1619.models.inputs.vector.SwerveOdometry;
-import org.team1619.models.inputs.vector.robot.RobotAcceleration;
-import org.team1619.models.inputs.vector.robot.RobotCanCoder;
-import org.team1619.models.inputs.vector.robot.RobotLimelight;
-import org.team1619.models.inputs.vector.robot.RobotNavx;
+import org.team1619.models.inputs.vector.robot.*;
+import org.team1619.models.inputs.vector.sim.SimNetworkTableReader;
 import org.team1619.models.outputs.bool.robot.RobotSolenoidDouble;
 import org.team1619.models.outputs.bool.robot.RobotSolenoidSingle;
 import org.team1619.models.outputs.numeric.AbsoluteEncoderTalon;
@@ -127,6 +127,12 @@ public class AbstractRobotModelFactory extends AbstractModelFactory {
                 return new SwerveOdometry(name, config, fSharedInputValues);
             case "limelight":
                 return new RobotLimelight(name, config);
+            case "network_table_reader":
+                return new RobotNetworkTableReader(name, config);
+            case "network_table_odometry":
+                return new NetworkTableOdometry(name, config, fSharedInputValues);
+            case "odometry_fuser":
+                return new OdometryFuser(name, config, fSharedInputValues);
             case "navx":
                 return new RobotNavx(name, config, fSharedHardwareFactory);
             case "cancoder":

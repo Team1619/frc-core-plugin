@@ -37,6 +37,7 @@ public class SwerveOdometry extends InputVector {
     private double heading;
 
     private Pose2d currentPosition;
+    private Vector rotatedRobotTranslation;
 
     public SwerveOdometry(Object name, Config config, InputValues inputValues) {
         super(name, config);
@@ -69,6 +70,8 @@ public class SwerveOdometry extends InputVector {
         getModuleVector(1);
         getModuleVector(2);
         getModuleVector(3);
+
+        currentPosition = new Pose2d();
     }
 
     @Override
@@ -79,7 +82,7 @@ public class SwerveOdometry extends InputVector {
         // Rotate the robot oriented motion by the robot heading to get the robot motion relative to the field.
         Vector totalWheelTranslation = new Vector(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3)));
         Vector robotTranslation = totalWheelTranslation.scale(0.25);
-        Vector rotatedRobotTranslation = robotTranslation.rotate(heading);
+        rotatedRobotTranslation = robotTranslation.rotate(heading);
 
         currentPosition = new Pose2d(currentPosition.add(rotatedRobotTranslation), heading);
     }
@@ -102,7 +105,7 @@ public class SwerveOdometry extends InputVector {
 
     @Override
     public Map<String, Double> get() {
-        return Map.of("x", currentPosition.getX(), "y", currentPosition.getY(), "heading", currentPosition.getHeading());
+        return Map.of("x", currentPosition.getX(), "y", currentPosition.getY(), "dx", rotatedRobotTranslation.getX(), "dy", rotatedRobotTranslation.getY(), "heading", currentPosition.getHeading());
     }
 
     private double getHeading() {
@@ -116,7 +119,6 @@ public class SwerveOdometry extends InputVector {
     }
 
     public void zeroPosition() {
-        currentPosition = new Pose2d();
         // Refresh module positions so that deltas work.
         initialize();
     }
