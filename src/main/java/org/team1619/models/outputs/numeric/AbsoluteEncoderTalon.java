@@ -92,6 +92,6 @@ public class AbsoluteEncoderTalon extends OutputNumeric {
     }
 
     private double rangeEncoderPosition(double position) {
-        return (((position % fCountsPerRev) - fMinAbsolutePosition) % fCountsPerRev) + fMinAbsolutePosition;
+        return (((position % fCountsPerRev) - fMinAbsolutePosition + fCountsPerRev) % fCountsPerRev) + fMinAbsolutePosition;
     }
 }
