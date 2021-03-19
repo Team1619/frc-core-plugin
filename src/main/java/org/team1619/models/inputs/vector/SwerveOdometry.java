@@ -21,29 +21,20 @@ import java.util.Map;
  * @author Matthew Oates
  */
 
-public class SwerveOdometry extends InputVector {
+public class SwerveOdometry extends BaseOdometry {
 
-    private static final Logger LOGGER = LogManager.getLogger(SwerveOdometry.class);
-
-    protected final Config config;
-    protected final InputValues sharedInputValues;
     private final String navx;
     private final List<String> modulePositionInputs;
     private final List<String> moduleAngleInputs;
+    private final List<Double> lastModulePositions;
+    private final List<Double> lastModuleAngles;
 
     private Map<String, Double> navxValues;
-    private List<Double> lastModulePositions;
-    private List<Double> lastModuleAngles;
     private double heading;
 
-    private Pose2d currentPosition;
-    private Vector rotatedRobotTranslation;
-
     public SwerveOdometry(Object name, Config config, InputValues inputValues) {
-        super(name, config);
+        super(name, config, inputValues, UpdateMode.DELTA_POSITION);
 
-        this.config = config;
-        sharedInputValues = inputValues;
         navxValues = new HashMap<>();
 
         navx = config.getString("navx");
@@ -59,7 +50,6 @@ public class SwerveOdometry extends InputVector {
         lastModuleAngles = new ArrayList<>();
         lastModuleAngles.addAll(List.of(0.0, 0.0, 0.0, 0.0));
 
-        currentPosition = new Pose2d();
         heading = 0;
     }
 
@@ -70,21 +60,34 @@ public class SwerveOdometry extends InputVector {
         getModuleVector(1);
         getModuleVector(2);
         getModuleVector(3);
-
-        currentPosition = new Pose2d();
     }
 
     @Override
-    public void update() {
+    protected Pose2d getPositionUpdate() {
         heading = getHeading();
 
         // Add all the module motions together then divide by the number of module to get robot oriented motion.
         // Rotate the robot oriented motion by the robot heading to get the robot motion relative to the field.
         Vector totalWheelTranslation = new Vector(getModuleVector(0).add(getModuleVector(1)).add(getModuleVector(2)).add(getModuleVector(3)));
         Vector robotTranslation = totalWheelTranslation.scale(0.25);
-        rotatedRobotTranslation = robotTranslation.rotate(heading);
+        Vector rotatedRobotTranslation = robotTranslation.rotate(heading);
 
-        currentPosition = new Pose2d(currentPosition.add(rotatedRobotTranslation), heading);
+        return new Pose2d(rotatedRobotTranslation, heading);
+    }
+
+    @Override
+    protected void zero() {
+        initialize();
+    }
+
+    private double getHeading() {
+        navxValues = sharedInputValues.getVector(navx);
+        double heading = navxValues.getOrDefault("angle", 0.0);
+
+        // Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
+        heading = -heading;
+
+        return heading;
     }
 
     public Vector getModuleVector(int module) {
@@ -101,33 +104,5 @@ public class SwerveOdometry extends InputVector {
         // The average module angle over the frame, this is the most accurate representation of module angle for the vector of motion.
         double angle = sharedInputValues.getVector(moduleAngleInputs.get(module)).getOrDefault("absolute_position", 0.0);
         return (angle + lastModuleAngles.set(module, angle)) / 2;
-    }
-
-    @Override
-    public Map<String, Double> get() {
-        return Map.of("x", currentPosition.getX(), "y", currentPosition.getY(), "dx", rotatedRobotTranslation.getX(), "dy", rotatedRobotTranslation.getY(), "heading", currentPosition.getHeading());
-    }
-
-    private double getHeading() {
-        navxValues = sharedInputValues.getVector(navx);
-        double heading = navxValues.getOrDefault("angle", 0.0);
-
-        // Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
-        heading = -heading;
-
-        return heading;
-    }
-
-    public void zeroPosition() {
-        // Refresh module positions so that deltas work.
-        initialize();
-    }
-
-    @Override
-    public void processFlag(String flag) {
-        if ("zero".equals(flag)) {
-            zeroPosition();
-            LOGGER.debug("Odometry Input -> Zeroed");
-        }
     }
 }

@@ -1,26 +1,22 @@
 package org.team1619.models.inputs.vector;
 
-import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.shared.abstractions.InputValues;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.purepursuit.Point;
+import org.uacr.utilities.purepursuit.Pose2d;
 import org.uacr.utilities.purepursuit.Vector;
 
 import java.util.Map;
 
-public class NetworkTableOdometry extends InputVector {
+public class NetworkTableOdometry extends BaseOdometry {
 
-    private final InputValues inputValues;
     private final String networkTablesInput;
 
-    private Vector position;
     private double valid;
     private Vector offset;
 
     public NetworkTableOdometry(Object name, Config config, InputValues inputValues) {
-        super(name, config);
-
-        this.inputValues = inputValues;
+        super(name, config, inputValues, UpdateMode.ABSOLUTE_POSITION);
 
         networkTablesInput = config.getString("network_table_input");
 
@@ -31,28 +27,26 @@ public class NetworkTableOdometry extends InputVector {
 
     @Override
     public void initialize() {
-        position = new Vector();
         valid = 0.0;
     }
 
     @Override
-    public void update() {
-        Map<String, Double> networkTablesValues = inputValues.getVector(networkTablesInput);
+    public Pose2d getPositionUpdate() {
+        Map<String, Double> networkTablesValues = sharedInputValues.getVector(networkTablesInput);
 
-        position = new Vector(new Point(networkTablesValues.get("x"), networkTablesValues.get("y")));
         valid = networkTablesValues.get("valid");
+
+        return new Pose2d(new Point(networkTablesValues.get("x"), networkTablesValues.get("y")), 0.0);
+    }
+
+    @Override
+    protected void zero() {
+        offset = new Vector(new Vector().subtract(getCurrentPosition()));
     }
 
     @Override
     public Map<String, Double> get() {
-        Vector output = new Vector(position.add(offset));
-        return Map.of("x", output.getX(), "y", output.getY(), "valid", valid);
-    }
-
-    @Override
-    public void processFlag(String flag) {
-        if("zero".equals(flag)) {
-            offset = new Vector(new Vector().subtract(position));
-        }
+//        return Map.of("x", output.getX(), "y", output.getY(), "valid", valid);
+        return Map.of();
     }
 }
