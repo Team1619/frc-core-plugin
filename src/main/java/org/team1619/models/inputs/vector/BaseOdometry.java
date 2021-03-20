@@ -12,16 +12,19 @@ import java.util.Map;
 
 public abstract class BaseOdometry extends InputVector {
 
-    private static final Logger LOGGER = LogManager.getLogger(BaseOdometry.class);
+    protected static final Logger LOGGER = LogManager.getLogger(BaseOdometry.class);
 
     protected final Config config;
     protected final InputValues sharedInputValues;
     protected final UpdateMode updateMode;
+    private final String newUpdateKey;
 
-    private Pose2d currentPosition;
+    private Pose2d rawPosition;
     private Pose2d positionUpdate;
-    private Pose2d lastPositionUpdate;
-    private Vector positionDelta;
+    private Pose2d positionOffset;
+    private Pose2d currentPosition;
+    private Pose2d lastPosition;
+    private Vector deltaPosition;
 
     public BaseOdometry(Object name, Config config, InputValues inputValues, UpdateMode updateMode) {
         super(name, config);
@@ -29,11 +32,14 @@ public abstract class BaseOdometry extends InputVector {
         this.config = config;
         this.sharedInputValues = inputValues;
         this.updateMode = updateMode;
+        newUpdateKey = name + "_new_position";
 
-        currentPosition = new Pose2d();
+        rawPosition = new Pose2d();
         positionUpdate = new Pose2d();
-        lastPositionUpdate = new Pose2d();
-        positionDelta = new Vector();
+        positionOffset = new Pose2d();
+        currentPosition = new Pose2d();
+        lastPosition = new Pose2d();
+        deltaPosition = new Vector();
     }
 
     @Override
@@ -43,35 +49,52 @@ public abstract class BaseOdometry extends InputVector {
 
     @Override
     public void update() {
-        lastPositionUpdate = positionUpdate;
+        Map<String, Double> newPositionData = sharedInputValues.getVector(newUpdateKey);
+        if(!newPositionData.isEmpty()) {
+            zero();
+
+            positionOffset = new Pose2d(newPositionData.get("x"), newPositionData.get("y"), newPositionData.get("heading"));
+            lastPosition = positionOffset;
+            sharedInputValues.setVector(newUpdateKey, Map.of());
+        }
+
         positionUpdate = getPositionUpdate();
 
         if(UpdateMode.DELTA_POSITION == updateMode) {
-            currentPosition = new Pose2d(currentPosition.add(positionUpdate), positionUpdate.getHeading());
-            positionDelta = new Vector(positionUpdate);
+            rawPosition = new Pose2d(rawPosition.add(positionUpdate), positionUpdate.getHeading());
         } else {
-            currentPosition = positionUpdate;
-            positionDelta = new Vector(positionDelta.subtract(lastPositionUpdate));
+            rawPosition = positionUpdate;
         }
+
+        lastPosition = currentPosition;
+        currentPosition = new Pose2d(new Vector(new Vector(rawPosition).rotate(-positionOffset.getHeading()).add(positionOffset)), rangeAngle(rawPosition.getHeading() + positionOffset.getHeading()));
+        deltaPosition = new Vector(currentPosition.subtract(lastPosition));
     }
 
     @Override
     public Map<String, Double> get() {
-        return Map.of("x", currentPosition.getX(), "y", currentPosition.getY(), "dx", positionDelta.getX(), "dy", positionDelta.getY(), "heading", currentPosition.getHeading());
+        return Map.of("x", currentPosition.getX(), "y", currentPosition.getY(), "dx", deltaPosition.getX(), "dy", deltaPosition.getY(), "heading", currentPosition.getHeading());
     }
 
     @Override
     public void processFlag(String flag) {
         if("zero".equals(flag)) {
             zero();
+            positionOffset = new Pose2d();
+            rawPosition = new Pose2d();
             currentPosition = new Pose2d();
+            lastPosition = new Pose2d();
 
             LOGGER.debug("{} -> Zero", fName);
         }
     }
 
-    protected Pose2d getCurrentPosition() {
-        return currentPosition;
+    protected Pose2d getRawPosition() {
+        return rawPosition;
+    }
+
+    protected double rangeAngle(double position) {
+        return (((position % 360) + 540) % 360) - 180;
     }
 
     protected abstract Pose2d getPositionUpdate();

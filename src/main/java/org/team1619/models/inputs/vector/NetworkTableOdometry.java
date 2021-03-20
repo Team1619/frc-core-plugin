@@ -6,6 +6,7 @@ import org.uacr.utilities.purepursuit.Point;
 import org.uacr.utilities.purepursuit.Pose2d;
 import org.uacr.utilities.purepursuit.Vector;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class NetworkTableOdometry extends BaseOdometry {
@@ -13,6 +14,7 @@ public class NetworkTableOdometry extends BaseOdometry {
     private final String networkTablesInput;
 
     private double valid;
+    private Vector visionPosition;
     private Vector offset;
 
     public NetworkTableOdometry(Object name, Config config, InputValues inputValues) {
@@ -22,6 +24,7 @@ public class NetworkTableOdometry extends BaseOdometry {
 
         initialize();
 
+        visionPosition = new Vector();
         offset = new Vector();
     }
 
@@ -36,17 +39,21 @@ public class NetworkTableOdometry extends BaseOdometry {
 
         valid = networkTablesValues.get("valid");
 
-        return new Pose2d(new Point(networkTablesValues.get("x"), networkTablesValues.get("y")), 0.0);
+        visionPosition = new Vector(new Point(networkTablesValues.get("x"), networkTablesValues.get("y")));
+        return new Pose2d(visionPosition.add(offset), 0.0);
     }
 
     @Override
     protected void zero() {
-        offset = new Vector(new Vector().subtract(getCurrentPosition()));
+        offset = new Vector(new Vector().subtract(visionPosition));
     }
 
     @Override
     public Map<String, Double> get() {
-//        return Map.of("x", output.getX(), "y", output.getY(), "valid", valid);
-        return Map.of();
+        Map<String, Double> data = new HashMap<>(super.get());
+
+        data.put("valid", valid);
+
+        return data;
     }
 }

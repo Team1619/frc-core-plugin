@@ -27,7 +27,6 @@ public class SwerveOdometry extends BaseOdometry {
     private final List<String> modulePositionInputs;
     private final List<String> moduleAngleInputs;
     private final List<Double> lastModulePositions;
-    private final List<Double> lastModuleAngles;
 
     private Map<String, Double> navxValues;
     private double heading;
@@ -47,8 +46,6 @@ public class SwerveOdometry extends BaseOdometry {
 
         lastModulePositions = new ArrayList<>();
         lastModulePositions.addAll(List.of(0.0, 0.0, 0.0, 0.0));
-        lastModuleAngles = new ArrayList<>();
-        lastModuleAngles.addAll(List.of(0.0, 0.0, 0.0, 0.0));
 
         heading = 0;
     }
@@ -101,8 +98,6 @@ public class SwerveOdometry extends BaseOdometry {
     }
 
     public double getModuleAngle(int module) {
-        // The average module angle over the frame, this is the most accurate representation of module angle for the vector of motion.
-        double angle = sharedInputValues.getVector(moduleAngleInputs.get(module)).getOrDefault("absolute_position", 0.0);
-        return (angle + lastModuleAngles.set(module, angle)) / 2;
+        return sharedInputValues.getVector(moduleAngleInputs.get(module)).getOrDefault("absolute_position", 0.0);
     }
 }
