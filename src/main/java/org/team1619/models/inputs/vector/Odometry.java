@@ -1,6 +1,5 @@
 package org.team1619.models.inputs.vector;
 
-import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.shared.abstractions.InputValues;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.logging.LogManager;
@@ -18,56 +17,34 @@ import java.util.Map;
  * @author Matthew Oates
  */
 
-public class Odometry extends InputVector {
+public class Odometry extends BaseOdometry {
 
-    private static final Logger sLogger = LogManager.getLogger(Odometry.class);
+    private final String navx;
+    private final String leftEncoder;
+    private final String rightEncoder;
 
-    protected final Config fConfig;
-    protected final InputValues fSharedInputValues;
-    private final String fNavx;
-    private final String fLeftEncoder;
-    private final String fRightEncoder;
-
-    private Map<String, Double> mNavxValues;
+    private Map<String, Double> navxValues;
     private double mLeftPosition = 0;
     private double mRightPosition = 0;
     private double mHeading = 0;
 
-    private Pose2d mCurrentPosition;
-
     public Odometry(Object name, Config config, InputValues inputValues) {
-        super(name, config);
+        super(name, config, inputValues, UpdateMode.DELTA_POSITION);
 
-        fConfig = config;
-        fSharedInputValues = inputValues;
-        mNavxValues = new HashMap<>();
+        navxValues = new HashMap<>();
 
-        fNavx = config.getString("navx");
+        navx = config.getString("navx");
 
-        fLeftEncoder = config.getString("left_encoder");
-        fRightEncoder = config.getString("right_encoder");
-
-        mCurrentPosition = new Pose2d();
+        leftEncoder = config.getString("left_encoder");
+        rightEncoder = config.getString("right_encoder");
     }
 
     @Override
-    public void initialize() {
-
-    }
-
-    @Override
-    public void update() {
-        if (!fSharedInputValues.getBoolean("ipb_odometry_has_been_zeroed")) {
-            zeroPosition();
-            fSharedInputValues.setBoolean("ipb_odometry_has_been_zeroed", true);
-            sLogger.debug("Odometry Input -> Zeroed");
-            return;
-        }
-
+    public Pose2d getPositionUpdate() {
         mHeading = getHeading();
 
-        double leftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
-        double rightPosition = fSharedInputValues.getNumeric(fRightEncoder);
+        double leftPosition = sharedInputValues.getNumeric(leftEncoder);
+        double rightPosition = sharedInputValues.getNumeric(rightEncoder);
 
 		/*
 		"distance" is the straight line distance the robot has traveled since the last iteration
@@ -80,37 +57,25 @@ public class Odometry extends InputVector {
 		 */
         double distance = ((leftPosition - mLeftPosition) + (rightPosition - mRightPosition)) / 2;
 
-        mCurrentPosition = new Pose2d(mCurrentPosition.add(new Vector(distance, mHeading)), mHeading);
-
         mLeftPosition = leftPosition;
         mRightPosition = rightPosition;
-    }
 
-    public void zeroPosition() {
-        mLeftPosition = fSharedInputValues.getNumeric(fLeftEncoder);
-        mRightPosition = fSharedInputValues.getNumeric(fRightEncoder);
-        mCurrentPosition = new Pose2d();
+        return new Pose2d(new Vector(distance, mHeading), mHeading);
     }
 
     @Override
-    public Map<String, Double> get() {
-        return Map.of("x", mCurrentPosition.getX(), "y", mCurrentPosition.getY(), "heading", mCurrentPosition.getHeading());
+    protected void zero() {
+        mLeftPosition = sharedInputValues.getNumeric(leftEncoder);
+        mRightPosition = sharedInputValues.getNumeric(rightEncoder);
     }
 
     private double getHeading() {
-        mNavxValues = fSharedInputValues.getVector(fNavx);
-        double heading = mNavxValues.getOrDefault("yaw", 0.0);
+        navxValues = sharedInputValues.getVector(navx);
+        double heading = navxValues.getOrDefault("angle", 0.0);
 
-        if (heading > 180) heading = -(360 - heading);
-
-        //Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
+        // Inverts the heading to so that positive angle is counterclockwise, this makes trig functions work properly
         heading = -heading;
 
         return heading;
-    }
-
-    @Override
-    public void processFlag(String flag) {
-
     }
 }

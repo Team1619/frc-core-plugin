@@ -1,6 +1,5 @@
 package org.team1619.models.inputs.vector;
 
-import org.uacr.models.inputs.vector.InputVector;
 import org.uacr.shared.abstractions.InputValues;
 import org.uacr.utilities.Config;
 import org.uacr.utilities.purepursuit.Point;
@@ -9,9 +8,8 @@ import org.uacr.utilities.purepursuit.Vector;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Predicate;
 
-public class OdometryFuser extends InputVector {
+public class OdometryFuser extends BaseOdometry {
 
     private final InputValues inputValues;
 
@@ -23,10 +21,9 @@ public class OdometryFuser extends InputVector {
 
     private Vector lastAbsoluteOdometryPosition;
     private Vector relativeOdometryOffset;
-    private Pose2d odometryPosition;
 
     public OdometryFuser(Object name, Config config, InputValues inputValues) {
-        super(name, config);
+        super(name, config, inputValues, UpdateMode.ABSOLUTE_POSITION);
 
         this.inputValues = inputValues;
 
@@ -38,19 +35,15 @@ public class OdometryFuser extends InputVector {
 
         lastAbsoluteOdometryPosition = new Vector();
         relativeOdometryOffset = new Vector();
-        odometryPosition = new Pose2d();
     }
 
     @Override
     public void initialize() {
         movementBuffer.clear();
-
-        lastAbsoluteOdometryPosition = new Vector();
-        relativeOdometryOffset = new Vector();
     }
 
     @Override
-    public void update() {
+    protected Pose2d getPositionUpdate() {
         long currentTime = System.currentTimeMillis();
 
         Map<String, Double> relativeOdometryValues = inputValues.getVector(relativeOdometryInput);
@@ -75,18 +68,11 @@ public class OdometryFuser extends InputVector {
             }
         }
 
-        odometryPosition = new Pose2d(relativeOdometryPosition.add(relativeOdometryOffset), relativeOdometryValues.get("heading"));
+        return new Pose2d(relativeOdometryPosition.add(relativeOdometryOffset), relativeOdometryValues.get("heading"));
     }
 
     @Override
-    public Map<String, Double> get() {
-        return Map.of("x", odometryPosition.getX(), "y", odometryPosition.getY(), "heading", odometryPosition.getHeading());
-    }
-
-    @Override
-    public void processFlag(String flag) {
-        if("zero".equals(flag)) {
-            lastAbsoluteOdometryPosition = new Vector(Integer.MAX_VALUE, 0);
-        }
+    protected void zero() {
+        lastAbsoluteOdometryPosition = new Vector(Integer.MAX_VALUE, 0);
     }
 }
