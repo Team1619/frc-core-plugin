@@ -18,6 +18,7 @@ public abstract class BaseOdometry extends InputVector {
     protected final InputValues sharedInputValues;
     protected final UpdateMode updateMode;
     private final String newUpdateKey;
+    private final HeadingMode headingMode;
 
     private Pose2d rawPosition;
     private Pose2d positionUpdate;
@@ -26,13 +27,14 @@ public abstract class BaseOdometry extends InputVector {
     private Pose2d lastPosition;
     private Vector deltaPosition;
 
-    public BaseOdometry(Object name, Config config, InputValues inputValues, UpdateMode updateMode) {
+    public BaseOdometry(Object name, Config config, InputValues inputValues, UpdateMode updateMode, HeadingMode headingMode) {
         super(name, config);
 
         this.config = config;
         this.sharedInputValues = inputValues;
         this.updateMode = updateMode;
         newUpdateKey = name + "_new_position";
+        this.headingMode = headingMode;
 
         rawPosition = new Pose2d();
         positionUpdate = new Pose2d();
@@ -40,6 +42,10 @@ public abstract class BaseOdometry extends InputVector {
         currentPosition = new Pose2d();
         lastPosition = new Pose2d();
         deltaPosition = new Vector();
+    }
+
+    public BaseOdometry(Object name, Config config, InputValues inputValues, UpdateMode updateMode) {
+        this(name, config, inputValues, updateMode, HeadingMode.ROBOT_CENTRIC);
     }
 
     @Override
@@ -67,7 +73,7 @@ public abstract class BaseOdometry extends InputVector {
         }
 
         lastPosition = currentPosition;
-        currentPosition = new Pose2d(new Vector(new Vector(rawPosition).rotate(-positionOffset.getHeading()).add(positionOffset)), rangeAngle(rawPosition.getHeading() + positionOffset.getHeading()));
+        currentPosition = new Pose2d(new Vector(new Vector(rawPosition).rotate(HeadingMode.ROBOT_CENTRIC == headingMode ? positionOffset.getHeading() : 0).add(positionOffset)), rangeAngle(rawPosition.getHeading() + positionOffset.getHeading()));
         deltaPosition = new Vector(currentPosition.subtract(lastPosition));
     }
 
@@ -93,6 +99,10 @@ public abstract class BaseOdometry extends InputVector {
         return rawPosition;
     }
 
+    protected Pose2d getPositionOffset() {
+        return positionOffset;
+    }
+
     protected double rangeAngle(double position) {
         return (((position % 360) + 540) % 360) - 180;
     }
@@ -104,5 +114,10 @@ public abstract class BaseOdometry extends InputVector {
     protected enum UpdateMode {
         ABSOLUTE_POSITION,
         DELTA_POSITION
+    }
+
+    protected enum HeadingMode {
+        FIELD_CENTRIC,
+        ROBOT_CENTRIC
     }
 }
