@@ -23,7 +23,7 @@ public class OdometryFuser extends BaseOdometry {
     private Vector relativeOdometryOffset;
 
     public OdometryFuser(Object name, Config config, InputValues inputValues) {
-        super(name, config, inputValues, UpdateMode.ABSOLUTE_POSITION);
+        super(name, config, inputValues, UpdateMode.ABSOLUTE_POSITION, HeadingMode.FIELD_CENTRIC);
 
         this.inputValues = inputValues;
 
@@ -49,8 +49,8 @@ public class OdometryFuser extends BaseOdometry {
         Map<String, Double> relativeOdometryValues = inputValues.getVector(relativeOdometryInput);
         Map<String, Double> absoluteOdometryValues = inputValues.getVector(absoluteOdometryInput);
 
-        Vector relativeOdometryPosition = new Vector(new Point(relativeOdometryValues.get("x"), relativeOdometryValues.get("y")));
-        Vector relativeOdometryDelta = new Vector(new Point(relativeOdometryValues.get("dx"), relativeOdometryValues.get("dy")));
+        Vector relativeOdometryPosition = new Vector(new Point(relativeOdometryValues.get("x"), relativeOdometryValues.get("y"))).rotate(getPositionOffset().getHeading());
+        Vector relativeOdometryDelta = new Vector(new Point(relativeOdometryValues.get("dx"), relativeOdometryValues.get("dy"))).rotate(getPositionOffset().getHeading());
 
         movementBuffer.put(currentTime, relativeOdometryDelta);
 
