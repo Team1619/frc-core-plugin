@@ -6,6 +6,7 @@ import org.uacr.utilities.purepursuit.Point;
 import org.uacr.utilities.purepursuit.Pose2d;
 import org.uacr.utilities.purepursuit.Vector;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,15 +55,15 @@ public class OdometryFuser extends BaseOdometry {
 
         movementBuffer.put(currentTime, relativeOdometryDelta);
 
-        movementBuffer.keySet().removeIf(t -> t < currentTime - absoluteOdometryDelay);
+        movementBuffer.keySet().removeIf(vectorTime -> vectorTime < currentTime - absoluteOdometryDelay);
 
         if(absoluteOdometryValues.getOrDefault("valid", 0.0) == 1.0) {
 
             Vector absoluteOdometryPosition = new Vector(new Point(absoluteOdometryValues.get("x"), absoluteOdometryValues.get("y")));
 
             if(!absoluteOdometryPosition.equals(lastAbsoluteOdometryPosition)) {
-                movementBuffer.values().stream().reduce((t, v) -> new Vector(t.add(v))).ifPresent(t -> {
-                    relativeOdometryOffset = new Vector(absoluteOdometryPosition.add(t).subtract(relativeOdometryPosition));
+                movementBuffer.values().stream().reduce((total, delta) -> new Vector(total.add(delta))).ifPresent(total -> {
+                    relativeOdometryOffset = new Vector(absoluteOdometryPosition.add(total).subtract(relativeOdometryPosition));
                 });
                 lastAbsoluteOdometryPosition = absoluteOdometryPosition;
             }
