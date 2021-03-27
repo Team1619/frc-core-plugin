@@ -90,8 +90,6 @@ public abstract class BaseOdometry extends InputVector {
             rawPosition = new Pose2d();
             currentPosition = new Pose2d();
             lastPosition = new Pose2d();
-
-            LOGGER.debug("{} -> Zero", fName);
         }
     }
 

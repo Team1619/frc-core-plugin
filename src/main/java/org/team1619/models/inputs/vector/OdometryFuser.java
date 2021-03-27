@@ -63,16 +63,20 @@ public class OdometryFuser extends BaseOdometry {
             if(!absoluteOdometryPosition.equals(lastAbsoluteOdometryPosition)) {
                 movementBuffer.values().stream().reduce((t, v) -> new Vector(t.add(v))).ifPresent(t -> {
                     relativeOdometryOffset = new Vector(absoluteOdometryPosition.add(t).subtract(relativeOdometryPosition));
+//                    LOGGER.info("RESET!!! {}, {}, {}, {}, {}", relativeOdometryPosition, relativeOdometryDelta, absoluteOdometryPosition, t, relativeOdometryOffset);
                 });
                 lastAbsoluteOdometryPosition = absoluteOdometryPosition;
             }
         }
+
+//        LOGGER.info("RELATIVE: {}   OUTPUT: {}", relativeOdometryPosition, relativeOdometryPosition.add(relativeOdometryOffset));
 
         return new Pose2d(relativeOdometryPosition.add(relativeOdometryOffset), relativeOdometryValues.get("heading"));
     }
 
     @Override
     protected void zero() {
+        movementBuffer.clear();
         lastAbsoluteOdometryPosition = new Vector(Integer.MAX_VALUE, 0);
     }
 }
