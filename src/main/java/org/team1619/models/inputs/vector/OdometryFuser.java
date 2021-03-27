@@ -74,6 +74,7 @@ public class OdometryFuser extends BaseOdometry {
 
     @Override
     protected void zero() {
+        movementBuffer.clear();
         lastAbsoluteOdometryPosition = new Vector(Integer.MAX_VALUE, 0);
     }
 }
